@@ -1,4 +1,4 @@
-/* design-scout scale: 17.0px @360px ratio 1.2 -> 19.0px @1440px ratio 1.333 (minor third -> perfect fourth) */
+/* front-design scale: 17.0px @360px ratio 1.2 -> 19.0px @1440px ratio 1.333 (minor third -> perfect fourth) */
 :root {
   --step--2: clamp(0.6683rem, 0.761rem - 0.103vw, 0.7378rem);  /* 11.8px -> 10.7px */
   --step--1: clamp(0.8854rem, 0.8836rem + 0.008vw, 0.8908rem);  /* 14.2px -> 14.3px */
@@ -23,7 +23,7 @@
   --space-xl-3xl: clamp(3.1875rem, 1.875rem + 5.8333vw, 7.125rem);  /* 51.0px -> 114.0px */
 }
 
-/* color: oklch, every used pair checked with design-scout contrast (AA) */
+/* color: oklch, every used pair checked with front-design contrast (AA) */
 :root {
   --paper: oklch(0.972 0.012 85);      /* page */
   --paper-2: oklch(0.945 0.016 85);    /* plates, table header */

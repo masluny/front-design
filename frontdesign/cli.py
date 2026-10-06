@@ -1,4 +1,4 @@
-"""design-scout command line."""
+"""front-design command line."""
 from __future__ import annotations
 
 import argparse
@@ -26,7 +26,7 @@ def _root() -> Path:
     try:
         return project.find_root()
     except project.ProjectError as e:
-        sys.exit(f"design-scout: {e}")
+        sys.exit(f"front-design: {e}")
 
 
 def _wrap(s: str, indent: str = "    ", width: int = 100) -> str:
@@ -42,9 +42,9 @@ def cmd_init(a):
     try:
         root = project.init(a.brief, Path(a.dir) if a.dir else None, a.type, a.stack, a.lang)
     except project.ProjectError as e:
-        sys.exit(f"design-scout: {e}")
+        sys.exit(f"front-design: {e}")
     print(f"created {root}/ (brief.toml, direction.md, research/, refs/, build/, audit/)")
-    print(f"next: cd {root} && fill brief.toml, then `design-scout sources` and `design-scout refs`")
+    print(f"next: cd {root} && fill brief.toml, then `front-design sources` and `front-design refs`")
 
 
 def cmd_status(a):
@@ -69,20 +69,20 @@ def cmd_status(a):
     if missing:
         steps.append(f"fill brief.toml: {', '.join(missing)}")
     if len(notes) < 8:
-        steps.append(f"research principles: {len(notes)}/8+ notes (design-scout sources, note add)")
+        steps.append(f"research principles: {len(notes)}/8+ notes (front-design sources, note add)")
     if len(refs) < 5:
-        steps.append(f"capture references: {len(refs)}/5+ (design-scout refs, capture)")
+        steps.append(f"capture references: {len(refs)}/5+ (front-design refs, capture)")
     if refs and observed < len(refs):
         steps.append(f"write observations in refs/*/notes.md ({observed}/{len(refs)} done)")
     if not data["direction_written"]:
         steps.append("write direction.md (2-3 options, pick one)")
     if not picks:
-        steps.append("pick effects (design-scout effects ..., effects pick)")
+        steps.append("pick effects (front-design effects ..., effects pick)")
     if not data["tokens_css"]:
-        steps.append("create tokens.css (design-scout scale --out tokens.css, contrast)")
+        steps.append("create tokens.css (front-design scale --out tokens.css, contrast)")
     if not audit or not audit["pass"]:
-        steps.append("build, then design-scout audit build/index.html until it passes")
-    steps.append("design-scout dossier")
+        steps.append("build, then front-design audit build/index.html until it passes")
+    steps.append("front-design dossier")
     data["next"] = steps
     _out(data, a.json, "\n".join([
         f"project {root} ({b.get('type')})",
@@ -139,7 +139,7 @@ def cmd_note(a):
             n = project.add_note(root, a.source, a.principle, a.quote, a.topic, verify=not a.no_verify,
                                  title=a.title, kind=a.kind)
         except project.ProjectError as e:
-            sys.exit(f"design-scout: {e}")
+            sys.exit(f"front-design: {e}")
         _out(n, a.json, f"{n['id']} added [{n['verified']}] {n['principle']}  <- {n['title']}")
         if n["verified"] == "not-found":
             print("  quote NOT found on the page: copy the exact words from the source (or drop --quote)")
@@ -228,7 +228,7 @@ def cmd_compare(a):
     root = _root()
     refs = project.load_refs(root)
     if not refs:
-        sys.exit("no captured references (design-scout capture URL)")
+        sys.exit("no captured references (front-design capture URL)")
     rows = []
     for r in refs:
         pal = r.get("palette", {})
@@ -270,7 +270,7 @@ def cmd_effects(a):
     if a.action == "show":
         e = catalog.effect_by_key(a.key or "")
         if not e:
-            sys.exit(f"unknown effect '{a.key}' (design-scout effects)")
+            sys.exit(f"unknown effect '{a.key}' (front-design effects)")
         if a.json:
             _out(e, True, "")
             return
@@ -291,13 +291,13 @@ def cmd_effects(a):
         return
     if a.action == "pick":
         if not root:
-            sys.exit("effects pick needs a project (run inside a design-scout project)")
+            sys.exit("effects pick needs a project (run inside a front-design project)")
         if not a.key or not a.why:
             sys.exit("effects pick KEY --why \"...\" [--role signature|support]")
         try:
             p = project.pick_effect(root, a.key, a.role, a.why)
         except project.ProjectError as e:
-            sys.exit(f"design-scout: {e}")
+            sys.exit(f"front-design: {e}")
         print(f"picked {p['name']} as {p['role']}")
         return
     items = catalog.find_effects(a.vibe, a.category, a.stack, a.max_cost)
@@ -309,13 +309,13 @@ def cmd_effects(a):
     for e in items:
         print(f"{e['key']:<22} {e['library']}: {e['name']}  [{e['category']}, {e['cost']}]")
         print(_wrap(e["use_when"], "    ", 104))
-    print("\ndesign-scout effects show KEY   for snippets, a11y and perf notes")
+    print("\nfront-design effects show KEY   for snippets, a11y and perf notes")
 
 
 def cmd_scale(a):
     ts = scale.type_scale(a.min_base, a.max_base, a.min_ratio, a.max_ratio, a.min_vw, a.max_vw, tuple(a.steps))
     items = ts + (scale.space_scale(a.min_base, a.max_base, a.min_vw, a.max_vw) if a.space else [])
-    css = (f"/* design-scout scale: {a.min_base}px @{a.min_vw:g}px ratio {a.min_ratio} -> {a.max_base}px @{a.max_vw:g}px "
+    css = (f"/* front-design scale: {a.min_base}px @{a.min_vw:g}px ratio {a.min_ratio} -> {a.max_base}px @{a.max_vw:g}px "
            f"ratio {a.max_ratio} ({scale.nearest_named_ratio(a.min_ratio)[1]} -> {scale.nearest_named_ratio(a.max_ratio)[1]}) */\n"
            + scale.to_css(items))
     if a.json:
@@ -324,7 +324,7 @@ def cmd_scale(a):
     if a.out:
         p = Path(a.out)
         existing = p.read_text() if p.exists() else ""
-        marker = "/* design-scout scale"
+        marker = "/* front-design scale"
         if marker in existing:
             start = existing.index(marker)
             end = existing.index("}", start) + 1
@@ -381,7 +381,7 @@ def cmd_dossier(a):
 
 def cmd_doctor(a):
     from . import browser
-    print(f"design-scout {__version__}, python {sys.version.split()[0]}")
+    print(f"front-design {__version__}, python {sys.version.split()[0]}")
     ok, msg = browser.available()
     print(f"playwright: {msg}")
     if ok:
@@ -413,8 +413,8 @@ def cmd_install(a):
 # ------------------------------------------------------------------ parser
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="design-scout", description="Research-first UI/UX design toolkit for AI agents.")
-    p.add_argument("--version", action="version", version=f"design-scout {__version__}")
+    p = argparse.ArgumentParser(prog="front-design", description="Research-first UI/UX design toolkit for AI agents.")
+    p.add_argument("--version", action="version", version=f"front-design {__version__}")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     s = sub.add_parser("init", help="create a design project folder with brief.toml")

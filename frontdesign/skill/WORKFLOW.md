@@ -1,4 +1,4 @@
-# design-scout workflow reference
+# front-design workflow reference
 
 Everything here is called from inside a project folder (the one holding `brief.toml`) unless
 noted. Add `--json` to most commands for machine-readable output.
@@ -11,7 +11,7 @@ design/<slug>/
   research/notes.json     principles with sources and verified quotes (P1, P2, ...)
   refs/<site>/            desktop-*.jpg, mobile-*.jpg, tokens.json, summary.md, notes.md, raw.json
   direction.md            options, chosen direction, tokens, sections, effects, principle checklist
-  tokens.css              design tokens (scale block managed by `design-scout scale --out`)
+  tokens.css              design tokens (scale block managed by `front-design scale --out`)
   effects.json            picked effects with role and reason
   build/                  prototype (when the user has no codebase)
   audit/latest.json       last audit, audit/shots/*.jpg, audit/history/
@@ -100,13 +100,13 @@ idea. Each option names what it borrows (`refs/<slug>`) and which principles it 
 
 ## Tokens
 
-- `design-scout scale` writes a `/* design-scout scale ... */ :root { --step-0 ... }` block; re-running
+- `front-design scale` writes a `/* front-design scale ... */ :root { --step-0 ... }` block; re-running
   with `--out` replaces only that block. Map h1..small to steps (for example h1 = step-5,
   h2 = step-3, body = step-0, small = step--1).
 - Colors: name by role (`--bg`, `--surface`, `--text`, `--muted`, `--accent`, `--accent-contrast`,
   `--border`), define in `oklch()`, and give dark mode its own values instead of inverting.
 - Check every pair you will actually use, including text on accent buttons and muted text on surfaces:
-  `design-scout contrast "oklch(0.25 0.02 60)" "#f6f1e9" "oklch(0.55 0.15 40)"`.
+  `front-design contrast "oklch(0.25 0.02 60)" "#f6f1e9" "oklch(0.55 0.15 40)"`.
 
 ## Audit
 
@@ -147,7 +147,7 @@ Score each 1-5 and fix anything under 4:
 
 ## Troubleshooting
 
-- `playwright not installed`: `pip install "design-scout[capture]"` and `python -m playwright install chromium`
+- `playwright not installed`: `pip install "front-design[capture]"` and `python -m playwright install chromium`
   (falls back to the system Chrome if Chromium is missing). Without it, `capture --static` still
   reads HTML/CSS and `audit --static` runs the source checks.
 - Fonts in a local `file://` build may not load from some CDNs; serve the folder

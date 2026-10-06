@@ -46,7 +46,7 @@ class BrowserUnavailable(RuntimeError):
 
 def available() -> tuple[bool, str]:
     if importlib.util.find_spec("playwright") is None:
-        return False, "playwright not installed: pip install 'design-scout[capture]' && python -m playwright install chromium"
+        return False, "playwright not installed: pip install 'front-design[capture]' && python -m playwright install chromium"
     return True, "ok"
 
 

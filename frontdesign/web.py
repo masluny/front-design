@@ -15,7 +15,7 @@ from html.parser import HTMLParser
 from . import __version__
 
 # An honest UA: several sites (w3.org among them) reject scripts that pretend to be a browser.
-UA = f"design-scout/{__version__} (UI/UX research CLI; +https://github.com/masluny/design-scout)"
+UA = f"front-design/{__version__} (UI/UX research CLI; +https://github.com/masluny/front-design)"
 MAX_BYTES = 4_000_000
 BLOCK_MARKERS = ("just a moment...", "attention required", "access denied", "verify you are human",
                  "are you a robot", "captcha")

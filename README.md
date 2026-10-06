@@ -1,9 +1,9 @@
-# design-scout
+# front-design
 
 Research-first UI/UX design for AI coding agents (Claude Code, Codex, Cursor).
 
 Ask an agent to "make it look professional" and it designs from memory: stock indigo gradients,
-three identical feature cards, Inter everywhere. design-scout makes the agent work the way a good
+three identical feature cards, Inter everywhere. front-design makes the agent work the way a good
 designer does:
 
 1. **Read the experts.** Curated sources (NN/g, Baymard, WCAG, web.dev, Butterick, Utopia, Apple HIG,
@@ -29,17 +29,17 @@ The agent makes the design judgments; the CLI does everything that should be obj
 ## Install
 
 ```bash
-git clone https://github.com/masluny/design-scout && cd design-scout
+git clone https://github.com/masluny/front-design && cd front-design
 pip install -e ".[capture]"
 python -m playwright install chromium
-design-scout install-skill
-design-scout doctor
+front-design install-skill
+front-design doctor
 ```
 
-`install-skill` copies the skill to `~/.claude/skills/design-scout` (Claude Code) and
-`~/.agents/skills/design-scout` (Codex). Cursor reads both locations. Use `--project .` to install
+`install-skill` copies the skill to `~/.claude/skills/front-design` (Claude Code) and
+`~/.agents/skills/front-design` (Codex). Cursor reads both locations. Use `--project .` to install
 into a repository instead (`.claude/skills` and `.agents/skills`), or `--link` while developing.
-For agents without skill support, paste `designscout/skill/AGENTS.md` into your `AGENTS.md`.
+For agents without skill support, paste `frontdesign/skill/AGENTS.md` into your `AGENTS.md`.
 
 Playwright is optional: without it `capture --static` still reads HTML and CSS, and `audit --static`
 runs the source checks. Everything else is standard library only (Python 3.11+).
@@ -57,23 +57,23 @@ a single component gets a couple).
 Or drive it by hand:
 
 ```bash
-design-scout init "Landing page for a coffee roastery" --type landing --stack vanilla --dir design/coffee
+front-design init "Landing page for a coffee roastery" --type landing --stack vanilla --dir design/coffee
 cd design/coffee
-design-scout sources                       # what to read, strongest evidence first
-design-scout note add --source nng-heuristics --topic usability \
+front-design sources                       # what to read, strongest evidence first
+front-design note add --source nng-heuristics --topic usability \
   --principle "Show the order status at every step" \
   --quote "The design should always keep users informed about what is going on"
-design-scout refs                          # galleries + exemplar sites for this page type
-design-scout capture https://stripe.com https://linear.app
-design-scout compare
-design-scout scale --min-base 17 --max-base 20 --max-ratio 1.25 --space --out tokens.css
-design-scout contrast "oklch(0.25 0.02 60)" "#f6f1e9" "#b4441c"
-design-scout effects --vibe warm --stack vanilla
-design-scout effects show paper-grain-gradient
-design-scout effects pick paper-grain-gradient --why "tactile, print-like warmth for a craft brand"
-design-scout audit build/index.html
-design-scout dossier --open
-design-scout status                        # progress and next steps at any time
+front-design refs                          # galleries + exemplar sites for this page type
+front-design capture https://stripe.com https://linear.app
+front-design compare
+front-design scale --min-base 17 --max-base 20 --max-ratio 1.25 --space --out tokens.css
+front-design contrast "oklch(0.25 0.02 60)" "#f6f1e9" "#b4441c"
+front-design effects --vibe warm --stack vanilla
+front-design effects show paper-grain-gradient
+front-design effects pick paper-grain-gradient --why "tactile, print-like warmth for a craft brand"
+front-design audit build/index.html
+front-design dossier --open
+front-design status                        # progress and next steps at any time
 ```
 
 ## Example: this tool's own landing page
@@ -83,7 +83,7 @@ verified quotes ([`research/notes.json`](examples/landing/research/notes.json)),
 references with written observations ([`refs/`](examples/landing/refs)), the direction with a
 principle checklist ([`direction.md`](examples/landing/direction.md)), tokens, picked effects and the
 final page ([`build/index.html`](examples/landing/build/index.html), audit 100/100). Screenshots of
-third-party sites are not committed; `design-scout capture` recreates them.
+third-party sites are not committed; `front-design capture` recreates them.
 
 ## Commands
 
@@ -135,11 +135,11 @@ Each finding links to the source behind it (for example `wcag-target-size`, `but
 
 ```bash
 python -m unittest discover tests                       # fast suite
-DS_BROWSER_TESTS=1 python -m unittest tests.test_core   # + Playwright audit tests
-design-scout doctor --online                            # every source URL
+FD_BROWSER_TESTS=1 python -m unittest tests.test_core   # + Playwright audit tests
+front-design doctor --online                            # every source URL
 ```
 
-Knowledge lives in `designscout/data/*.toml` (sources, galleries, effects); add entries there.
+Knowledge lives in `frontdesign/data/*.toml` (sources, galleries, effects); add entries there.
 
 ## Notes
 

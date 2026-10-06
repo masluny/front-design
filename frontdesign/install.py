@@ -6,7 +6,7 @@ import shutil
 from pathlib import Path
 
 SKILL_SRC = Path(__file__).parent / "skill"
-NAME = "design-scout"
+NAME = "front-design"
 
 # Claude Code reads ~/.claude/skills; Codex reads ~/.agents/skills; Cursor reads both of those
 # plus ~/.cursor/skills, so "all" installs into the first two (Cursor may list it from both; harmless).

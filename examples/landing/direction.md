@@ -25,7 +25,7 @@
 A. It expresses all three brand adjectives: rigorous (citations, figures, measured tables), crafted (book-like type, rules, details), warm (paper and vermilion ink). It differs from the direct competitor (refs/impeccable-style: condensed sans, yellow labels, white) while keeping category conventions every leader shares in `compare`: left-aligned hero, one filled primary CTA plus a text link, mono for commands.
 
 ## Tokens
-- Type: display Newsreader (editorial serif with optical sizes, italic for second voices), text IBM Plex Sans, mono IBM Plex Mono (Plex pair = engineering rigor). Fluid scale 17px @360 ratio 1.2 to 19px @1440 ratio 1.333 (`design-scout scale`; reference sites range 1.25-1.44 for developer tools). h1 = step-5, h2 = step-3, h3 = step-1, body = step-0, captions = step--1.
+- Type: display Newsreader (editorial serif with optical sizes, italic for second voices), text IBM Plex Sans, mono IBM Plex Mono (Plex pair = engineering rigor). Fluid scale 17px @360 ratio 1.2 to 19px @1440 ratio 1.333 (`front-design scale`; reference sites range 1.25-1.44 for developer tools). h1 = step-5, h2 = step-3, h3 = step-1, body = step-0, captions = step--1.
 - Color (oklch, contrast checked): paper, paper-2, ink, muted, rule, vermilion accent reserved for the primary action and verification stamps (P6), marker yellow for highlights only, green only for "verified" status.
 - Space: Utopia space scale (space-3xs .. space-3xl), sections separated by hairline rules and space-2xl.
 - Shape: radius 6px for controls, 2px for stamps; no drop shadows except the tactile primary button (P7, refs/posthog-com).
@@ -59,6 +59,6 @@ A. It expresses all three brand adjectives: rigorous (citations, figures, measur
 | P9 reduced motion | audit: rAF 20/s and 3 animations normally, 0 and 0 with reduce | done |
 | P10 purposeful motion | one shader in a frame + highlighter on key phrases below the fold | done |
 | P11 measure | lede and section copy capped at 62ch; audit found no line over 90 chars | done |
-| P12 fluid scale | `design-scout scale` 17/1.2 to 19/1.333; H1 one step down in the two-column layout | done |
+| P12 fluid scale | `front-design scale` 17/1.2 to 19/1.333; H1 one step down in the two-column layout | done |
 | P13 LCP | LCP element is a text paragraph at 232 ms locally; shader mounts after load | done |
 | P14 space not boxes | hairline rules and columns; no card grid anywhere | done |

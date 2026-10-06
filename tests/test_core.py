@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from designscout import analyze, catalog, cli, color, dossier, fingerprints, project, scale, web
+from frontdesign import analyze, catalog, cli, color, dossier, fingerprints, project, scale, web
 
 FIX = Path(__file__).parent / "fixtures"
 
@@ -157,7 +157,7 @@ class ProjectAndAuditTests(unittest.TestCase):
             self.assertIn("--step-0", html)
 
     def test_static_audit_flags_bad_page(self):
-        from designscout import audit
+        from frontdesign import audit
         with tempfile.TemporaryDirectory() as d:
             bad = audit.run(str(FIX / "bad.html"), Path(d) / "a", static=True)
             ids = {f["id"] for f in bad["findings"]}
@@ -186,10 +186,10 @@ class ProjectAndAuditTests(unittest.TestCase):
         self.assertIn('"ratio": 21.0', buf.getvalue())
 
 
-@unittest.skipUnless(os.environ.get("DS_BROWSER_TESTS"), "set DS_BROWSER_TESTS=1 to run Playwright tests")
+@unittest.skipUnless(os.environ.get("FD_BROWSER_TESTS"), "set FD_BROWSER_TESTS=1 to run Playwright tests")
 class BrowserTests(unittest.TestCase):
     def test_rendered_audit(self):
-        from designscout import audit
+        from frontdesign import audit
         with tempfile.TemporaryDirectory() as d:
             bad = audit.run(str(FIX / "bad.html"), Path(d) / "a", slices=2)
             ids = {f["id"] for f in bad["findings"]}

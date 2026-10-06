@@ -388,7 +388,7 @@ def rendered_checks(rep: Report, url: str, out_dir: Path, slices: int = 6) -> di
                 examples=[f["family"] for f in fonts], source="butterick-ten-minutes")
     if tokens["type"].get("distinct_sizes", 0) > 10:
         rep.add("type-scale", "warning", f"{tokens['type']['distinct_sizes']} distinct font sizes",
-                "Map sizes to a modular scale (design-scout scale).", source="utopia-fluid-type")
+                "Map sizes to a modular scale (front-design scale).", source="utopia-fluid-type")
     sp = tokens.get("spacing", {})
     fluid_space = any(k.startswith("--space") and "clamp(" in v for k, v in tokens.get("css_variables", {}).items())
     if sp.get("on_grid_share", 1) < 0.5 and not fluid_space:  # fluid clamp() spacing is off-grid by design

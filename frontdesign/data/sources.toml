@@ -8,7 +8,7 @@
 #   tool       = calculators and references used while designing
 #
 # Weigh them in that order when principles conflict: research > standard > guideline > craft.
-# `topics` and `types` drive `design-scout sources --type ...`; "*" means every page type.
+# `topics` and `types` drive `front-design sources --type ...`; "*" means every page type.
 
 # ---------------------------------------------------------------- usability / critique
 
@@ -406,7 +406,7 @@ url = "https://utopia.fyi/blog/designing-with-fluid-type-scales/"
 kind = "craft"
 topics = ["typography", "layout", "spacing"]
 types = ["*"]
-why = "One modular scale interpolated between a small and a large viewport via clamp(). `design-scout scale` implements it."
+why = "One modular scale interpolated between a small and a large viewport via clamp(). `front-design scale` implements it."
 
 [[source]]
 key = "modern-font-stacks"

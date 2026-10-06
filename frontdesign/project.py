@@ -11,7 +11,7 @@ from . import catalog, web
 
 BRIEF = "brief.toml"
 
-BRIEF_TEMPLATE = '''# design-scout brief. Fill the empty fields before research (ask the user or state assumptions).
+BRIEF_TEMPLATE = '''# front-design brief. Fill the empty fields before research (ask the user or state assumptions).
 
 [brief]
 title = {title}
@@ -48,7 +48,7 @@ def find_root(start: Path | None = None) -> Path:
     for cand in [p, *p.parents]:
         if (cand / BRIEF).exists():
             return cand
-    raise ProjectError("no brief.toml found here or in a parent folder; run `design-scout init \"<brief>\"` first")
+    raise ProjectError("no brief.toml found here or in a parent folder; run `front-design init \"<brief>\"` first")
 
 
 def init(brief: str, directory: Path | None, page_type: str, stack: str, language: str = "en") -> Path:
@@ -111,7 +111,7 @@ def add_note(root: Path, source: str, principle: str, quote: str | None, topic: 
         url, key, author = source, None, ""
         kind = kind or "web"
     else:
-        raise ProjectError(f"unknown source '{source}': use a key from `design-scout sources` or a full URL")
+        raise ProjectError(f"unknown source '{source}': use a key from `front-design sources` or a full URL")
     status, score = "unchecked", None
     if quote and verify:
         try:
@@ -170,7 +170,7 @@ def load_picks(root: Path) -> list[dict]:
 def pick_effect(root: Path, key: str, role: str, why: str) -> dict:
     eff = catalog.effect_by_key(key)
     if not eff:
-        raise ProjectError(f"unknown effect '{key}' (see `design-scout effects`)")
+        raise ProjectError(f"unknown effect '{key}' (see `front-design effects`)")
     picks = [p for p in load_picks(root) if p["key"] != key]
     if role == "signature":
         for p in picks:
@@ -202,8 +202,8 @@ DIRECTION_TEMPLATE = """# Design direction
 ## Chosen direction and why
 
 ## Tokens
-- Type: display <family>, text <family>; scale ratio <r> (design-scout scale ...)
-- Color: background, surface, text, muted, accent (contrast checked with design-scout contrast)
+- Type: display <family>, text <family>; scale ratio <r> (front-design scale ...)
+- Color: background, surface, text, muted, accent (contrast checked with front-design contrast)
 - Space: base unit, section rhythm
 - Shape: radius, borders, shadows
 

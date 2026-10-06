@@ -1,9 +1,9 @@
-# design-scout brief. Fill the empty fields before research (ask the user or state assumptions).
+# front-design brief. Fill the empty fields before research (ask the user or state assumptions).
 
 [brief]
-title = "design-scout: landing page"
+title = "front-design: landing page"
 summary = """
-Landing page for design-scout, a research-first UI/UX design skill and CLI for AI coding agents
+Landing page for front-design, a research-first UI/UX design skill and CLI for AI coding agents
 """
 type = "landing"          # landing | saas | ecommerce | dashboard | portfolio | editorial | docs | app | mobile-app
 stack = "vanilla"        # react-tailwind | next | vanilla | vue | astro | svelte | unknown

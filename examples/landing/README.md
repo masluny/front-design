@@ -1,6 +1,6 @@
-# Example: design-scout's own landing page
+# Example: front-design's own landing page
 
-A complete run of the design-scout skill, from brief to audited page.
+A complete run of the front-design skill, from brief to audited page.
 
 | Step | File |
 |---|---|
@@ -20,10 +20,10 @@ python -m http.server -d examples/landing 8000
 ```
 
 Screenshots of the reference sites are not committed (they are third-party pages);
-`design-scout capture <url>` recreates them locally. To rebuild the dossier:
+`front-design capture <url>` recreates them locally. To rebuild the dossier:
 
 ```bash
-cd examples/landing && design-scout capture https://impeccable.style/ https://resend.com https://paper.design/ https://linear.app https://press.stripe.com https://posthog.com && design-scout dossier
+cd examples/landing && front-design capture https://impeccable.style/ https://resend.com https://paper.design/ https://linear.app https://press.stripe.com https://posthog.com && front-design dossier
 ```
 
 Note: re-capturing overwrites `refs/*/summary.md` and `tokens.json` with fresh measurements, but keeps

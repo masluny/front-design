@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "design-scout"
+name = "front-design"
 version = "0.1.0"
 description = "Research-first UI/UX design toolkit for AI coding agents: reads expert sources, captures professional sites, then designs with modern effects and audits the result."
 readme = "README.md"
@@ -13,17 +13,17 @@ dependencies = []
 keywords = ["ui", "ux", "design", "web-design", "ai-agents", "claude-code", "codex", "cursor", "accessibility", "design-tokens", "shaders"]
 
 [project.urls]
-Homepage = "https://github.com/masluny/design-scout"
-Issues = "https://github.com/masluny/design-scout/issues"
+Homepage = "https://github.com/masluny/front-design"
+Issues = "https://github.com/masluny/front-design/issues"
 
 [project.optional-dependencies]
 capture = ["playwright>=1.45", "pillow>=10"]
 
 [project.scripts]
-design-scout = "designscout.cli:main"
+front-design = "frontdesign.cli:main"
 
 [tool.setuptools]
-packages = ["designscout"]
+packages = ["frontdesign"]
 
 [tool.setuptools.package-data]
-designscout = ["data/*.toml", "skill/*.md", "*.js"]
+frontdesign = ["data/*.toml", "skill/*.md", "*.js"]

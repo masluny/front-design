@@ -181,7 +181,7 @@ def build(root: Path, out: Path | None = None) -> Path:
                          f"<div class=\"sub\"><a href=\"{e(n['url'])}\">{e(n.get('title') or n['url'])}</a>"
                          + (f" ({e(n['author'])})" if n.get("author") else "") + "</div></div>")
     parts.append("<section id=\"principles\"><h2>Principles from expert sources</h2><p class=\"lede\">Each principle is tied to a source; quotes are checked against the live page text.</p>"
-                 f"<div class=\"grid\">{''.join(cards) or '<p>No notes yet (design-scout note add).</p>'}</div></section>")
+                 f"<div class=\"grid\">{''.join(cards) or '<p>No notes yet (front-design note add).</p>'}</div></section>")
 
     # references
     rcards = []
@@ -206,7 +206,7 @@ def build(root: Path, out: Path | None = None) -> Path:
                       f"<dt>theme</dt><dd>{e(str(r.get('theme')))}</dd></dl><div>{sw}</div>"
                       f"<div class=\"chips\">{''.join(f'<span class=chip>{e(x)}</span>' for x in libs)}</div>{obs_html}</div>")
     parts.append("<section id=\"references\"><h2>Reference sites</h2><p class=\"lede\">Captured with computed styles; open the thumbnails for full-page slices.</p>"
-                 f"<div class=\"grid\">{''.join(rcards) or '<p>No references yet (design-scout capture URL).</p>'}</div></section>")
+                 f"<div class=\"grid\">{''.join(rcards) or '<p>No references yet (front-design capture URL).</p>'}</div></section>")
 
     # comparison
     if refs:
@@ -242,7 +242,7 @@ def build(root: Path, out: Path | None = None) -> Path:
     ecards = "".join(f"<div class=\"card\"><span class=\"badge b-kind\">{e(p['role'])}</span><h3 style=\"margin-top:8px\">{e(p['name'])}</h3>"
                      f"<p>{e(p['why'])}</p><div class=\"sub\"><code>{e(p['package'])}@{e(p['version'])}</code> <a href=\"{e(p['url'])}\">docs</a></div></div>"
                      for p in picks)
-    parts.append(f"<section id=\"effects\"><h2>Effects</h2><div class=\"grid\">{ecards or '<p>None picked (design-scout effects pick).</p>'}</div></section>")
+    parts.append(f"<section id=\"effects\"><h2>Effects</h2><div class=\"grid\">{ecards or '<p>None picked (front-design effects pick).</p>'}</div></section>")
 
     # audit
     if audit:
@@ -255,7 +255,7 @@ def build(root: Path, out: Path | None = None) -> Path:
                      f"<p>{audit['errors']} errors, {audit['warnings']} warnings ({e(audit['mode'])}, {e(audit['time'])})</p>{fl}</div>"
                      f"<div class=\"card\">{imgs}</div></div></section>")
     else:
-        parts.append("<section id=\"audit\"><h2>Audit</h2><p class=\"lede\">Not run yet (design-scout audit build/index.html).</p></section>")
+        parts.append("<section id=\"audit\"><h2>Audit</h2><p class=\"lede\">Not run yet (front-design audit build/index.html).</p></section>")
     parts.append("</main></body></html>")
     out = out or root / "dossier.html"
     out.write_text("\n".join(parts))

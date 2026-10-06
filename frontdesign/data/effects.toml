@@ -15,7 +15,7 @@
 #   2. prefers-reduced-motion: stop or remove motion (speed 0 / static frame / no smooth scroll).
 #   3. Decorative canvases get aria-hidden="true" and never carry content.
 #   4. Text over an effect must pass contrast against the effect's lightest/darkest frame
-#      (`design-scout audit` samples real pixels).
+#      (`front-design audit` samples real pixels).
 #   5. Lazy-load below-the-fold effects; cap DPR; keep LCP an image or text, not a canvas.
 
 checked = "2026-10-06"

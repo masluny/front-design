@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>design-scout: research-first UI design for AI coding agents</title>
-<meta name="description" content="design-scout is a skill and CLI for Claude Code, Codex and Cursor: your agent reads expert sources, measures professional sites, picks one modern effect with a reason and audits the result before you see it.">
+<title>front-design: research-first UI design for AI coding agents</title>
+<meta name="description" content="front-design is a skill and CLI for Claude Code, Codex and Cursor: your agent reads expert sources, measures professional sites, picks one modern effect with a reason and audits the result before you see it.">
 <meta name="theme-color" content="#f6f2ea">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap">
 <style>
-/* design-scout scale: 17.0px @360px ratio 1.2 -> 19.0px @1440px ratio 1.333 (minor third -> perfect fourth) */
+/* front-design scale: 17.0px @360px ratio 1.2 -> 19.0px @1440px ratio 1.333 (minor third -> perfect fourth) */
 :root {
   --step--2: clamp(0.6683rem, 0.761rem - 0.103vw, 0.7378rem);  /* 11.8px -> 10.7px */
   --step--1: clamp(0.8854rem, 0.8836rem + 0.008vw, 0.8908rem);  /* 14.2px -> 14.3px */
@@ -35,7 +35,7 @@
   --space-xl-3xl: clamp(3.1875rem, 1.875rem + 5.8333vw, 7.125rem);  /* 51.0px -> 114.0px */
 }
 
-/* color: oklch, every used pair checked with design-scout contrast (AA) */
+/* color: oklch, every used pair checked with front-design contrast (AA) */
 :root {
   --paper: oklch(0.972 0.012 85);      /* page */
   --paper-2: oklch(0.945 0.016 85);    /* plates, table header */
@@ -262,7 +262,7 @@ footer a { color: var(--ink); }
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="design-scout, back to top"><span class="brand-mark" aria-hidden="true"></span>design-scout</a>
+    <a class="brand" href="#top" aria-label="front-design, back to top"><span class="brand-mark" aria-hidden="true"></span>front-design</a>
     <nav class="nav" aria-label="Main">
       <ul>
         <li><a href="#loop">How it works</a></li>
@@ -281,13 +281,13 @@ footer a { color: var(--ink); }
       <div>
         <p class="eyebrow">Agent skill + CLI for Claude Code, Codex and Cursor · MIT</p>
         <h1 id="hero-title">Research‑first UI design <span class="second">for your AI coding agent.</span></h1>
-        <p class="lede">design-scout makes your agent <span class="mark">read the experts and measure professional sites</span> before it designs, add one modern effect with a reason, and audit the result until it passes.</p>
+        <p class="lede">front-design makes your agent <span class="mark">read the experts and measure professional sites</span> before it designs, add one modern effect with a reason, and audit the result until it passes.</p>
         <div class="hero-actions">
           <div class="terminal">
             <div class="terminal-bar"><span>Install</span><button class="copy-btn" type="button" data-copy="install-cmds" hidden>Copy commands</button></div>
 <pre id="install-cmds"><code><span class="prompt">$ </span>pip install -e ".[capture]"
 <span class="prompt">$ </span>python -m playwright install chromium
-<span class="prompt">$ </span>design-scout install-skill</code></pre>
+<span class="prompt">$ </span>front-design install-skill</code></pre>
           </div>
           <p class="alt">Run inside a local checkout. Then ask your agent to design something, or <a href="#loop">see the seven steps it follows</a>.</p>
         </div>
@@ -311,13 +311,13 @@ footer a { color: var(--ink); }
         <p>Your agent still makes the design calls. The CLI does the parts that should be objective: sources, measurements, scales, contrast and the audit.</p>
       </div>
       <ol class="steps">
-        <li><span class="step-no">01 Brief</span><h3>Pin down audience and the one action</h3><div><p>Three brand adjectives, constraints and competitors go into brief.toml.</p><code>design-scout init "…" --type landing</code></div></li>
-        <li><span class="step-no">02 Principles</span><h3>Read the experts, quote them exactly</h3><div><p>71 curated sources ranked by evidence. Every quote is checked against the live page.</p><code>design-scout note add --quote "…"</code></div></li>
-        <li><span class="step-no">03 References</span><h3>Measure real professional sites</h3><div><p>Desktop and mobile screenshots plus fonts, type scale, palette, spacing and effect libraries.</p><code>design-scout capture &lt;urls&gt;</code></div></li>
-        <li><span class="step-no">04 Direction</span><h3>Decide with reasons, lock tokens</h3><div><p>Two or three real options, each citing principles and references. Fluid type scale, contrast matrix.</p><code>design-scout scale --space</code></div></li>
-        <li><span class="step-no">05 Effects</span><h3>Choose one signature effect</h3><div><p>28 effects with pinned versions, licenses and a reduced-motion path for each.</p><code>design-scout effects --vibe warm</code></div></li>
+        <li><span class="step-no">01 Brief</span><h3>Pin down audience and the one action</h3><div><p>Three brand adjectives, constraints and competitors go into brief.toml.</p><code>front-design init "…" --type landing</code></div></li>
+        <li><span class="step-no">02 Principles</span><h3>Read the experts, quote them exactly</h3><div><p>71 curated sources ranked by evidence. Every quote is checked against the live page.</p><code>front-design note add --quote "…"</code></div></li>
+        <li><span class="step-no">03 References</span><h3>Measure real professional sites</h3><div><p>Desktop and mobile screenshots plus fonts, type scale, palette, spacing and effect libraries.</p><code>front-design capture &lt;urls&gt;</code></div></li>
+        <li><span class="step-no">04 Direction</span><h3>Decide with reasons, lock tokens</h3><div><p>Two or three real options, each citing principles and references. Fluid type scale, contrast matrix.</p><code>front-design scale --space</code></div></li>
+        <li><span class="step-no">05 Effects</span><h3>Choose one signature effect</h3><div><p>28 effects with pinned versions, licenses and a reduced-motion path for each.</p><code>front-design effects --vibe warm</code></div></li>
         <li><span class="step-no">06 Build</span><h3>Build with real copy and tokens only</h3><div><p>No lorem ipsum, no invented customers or numbers, every state designed.</p><code>build/index.html</code></div></li>
-        <li><span class="step-no">07 Audit</span><h3>Audit until it passes, then hand over</h3><div><p>Contrast on real pixels, targets, focus, motion, mobile. Then one HTML dossier.</p><code>design-scout audit build/index.html</code></div></li>
+        <li><span class="step-no">07 Audit</span><h3>Audit until it passes, then hand over</h3><div><p>Contrast on real pixels, targets, focus, motion, mobile. Then one HTML dossier.</p><code>front-design audit build/index.html</code></div></li>
       </ol>
     </div>
   </section>
@@ -327,12 +327,12 @@ footer a { color: var(--ink); }
       <div class="section-head">
         <span class="label">02 / Evidence</span>
         <h2 id="evidence-title">Principles with sources, not vibes</h2>
-        <p>Three of the fourteen principles this page was designed with. Each quote was fetched from the source and <span class="mark">matched word for word</span> by <code>design-scout note add</code>.</p>
+        <p>Three of the fourteen principles this page was designed with. Each quote was fetched from the source and <span class="mark">matched word for word</span> by <code>front-design note add</code>.</p>
       </div>
       <div class="quotes">
         <figure>
           <blockquote cite="https://www.nngroup.com/articles/top-ten-guidelines-for-homepage-usability/"><p>“Start the page with a tagline that summarizes what the site or company does, especially if you're new or less than famous.”</p></blockquote>
-          <figcaption><span class="principle">P1: the headline says what design-scout does.</span><a href="https://www.nngroup.com/articles/top-ten-guidelines-for-homepage-usability/">Jakob Nielsen, Top 10 Guidelines for Homepage Usability</a><span class="stamp">Verified · exact</span></figcaption>
+          <figcaption><span class="principle">P1: the headline says what front-design does.</span><a href="https://www.nngroup.com/articles/top-ten-guidelines-for-homepage-usability/">Jakob Nielsen, Top 10 Guidelines for Homepage Usability</a><span class="stamp">Verified · exact</span></figcaption>
         </figure>
         <figure>
           <blockquote cite="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"><p>“The visual presentation of text and images of text has a contrast ratio of at least 4.5:1”</p></blockquote>
@@ -351,7 +351,7 @@ footer a { color: var(--ink); }
       <div class="section-head">
         <span class="label">03 / References</span>
         <h2 id="references-title">Measured, not remembered</h2>
-        <p>Your agent <span class="mark">never describes a reference from memory</span>. These are the six sites studied for this page, as <code>design-scout capture</code> measured them in a real browser.</p>
+        <p>Your agent <span class="mark">never describes a reference from memory</span>. These are the six sites studied for this page, as <code>front-design capture</code> measured them in a real browser.</p>
       </div>
       <div class="table-scroll" tabindex="0" role="region" aria-label="Measured references table, scrolls horizontally">
         <table>
@@ -438,14 +438,14 @@ footer a { color: var(--ink); }
       <div>
         <div class="terminal">
           <div class="terminal-bar"><span>From a local checkout</span><button class="copy-btn" type="button" data-copy="install-full" hidden>Copy commands</button></div>
-<pre id="install-full"><code><span class="prompt">$ </span>git clone https://github.com/masluny/design-scout
-<span class="prompt">$ </span>cd design-scout
+<pre id="install-full"><code><span class="prompt">$ </span>git clone https://github.com/masluny/front-design
+<span class="prompt">$ </span>cd front-design
 <span class="prompt">$ </span>pip install -e ".[capture]"
 <span class="prompt">$ </span>python -m playwright install chromium
-<span class="prompt">$ </span>design-scout install-skill
-<span class="prompt">$ </span>design-scout doctor</code></pre>
+<span class="prompt">$ </span>front-design install-skill
+<span class="prompt">$ </span>front-design doctor</code></pre>
         </div>
-        <p class="placeholder-note">Source, issues and the full workflow: <a href="https://github.com/masluny/design-scout">github.com/masluny/design-scout</a>.</p>
+        <p class="placeholder-note">Source, issues and the full workflow: <a href="https://github.com/masluny/front-design">github.com/masluny/front-design</a>.</p>
       </div>
     </div>
   </section>
@@ -453,8 +453,8 @@ footer a { color: var(--ink); }
 
 <footer>
   <div class="wrap">
-    <p>Designed with design-scout: 14 verified principles, 6 measured references, 1 effect.</p>
-    <p><a href="https://github.com/masluny/design-scout/tree/main/examples/landing">How this page was designed</a> · MIT license</p>
+    <p>Designed with front-design: 14 verified principles, 6 measured references, 1 effect.</p>
+    <p><a href="https://github.com/masluny/front-design/tree/main/examples/landing">How this page was designed</a> · MIT license</p>
   </div>
 </footer>
 
