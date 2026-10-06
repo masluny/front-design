@@ -1,0 +1,188 @@
+{
+  "target": "build/index.html",
+  "mode": "rendered",
+  "time": "2026-10-06 16:05:37",
+  "score": 100,
+  "pass": true,
+  "min_score": 85,
+  "errors": 0,
+  "warnings": 0,
+  "metrics": {
+    "reduced_motion_handled_in_source": true,
+    "text_checked_desktop": 201,
+    "text_checked_mobile": 51,
+    "motion_normal": {
+      "raf": 20,
+      "animations": 3
+    },
+    "motion_reduced": {
+      "raf": 0,
+      "animations": 0
+    },
+    "perf": {
+      "dom_content_loaded_ms": 209,
+      "load_ms": 434,
+      "requests": 3,
+      "transfer_kb": 98,
+      "kb_by_type": {
+        "link": 1,
+        "script": 62
+      },
+      "lcp_ms": 232,
+      "lcp_element": "p",
+      "cls": 0.003
+    },
+    "tokens": {
+      "fonts": [
+        {
+          "family": "IBM Plex Sans",
+          "share": 0.651,
+          "role": "body/ui",
+          "class": "sans",
+          "weights": [
+            "400",
+            "600"
+          ]
+        },
+        {
+          "family": "IBM Plex Mono",
+          "share": 0.208,
+          "role": "body/ui",
+          "class": "mono",
+          "weights": [
+            "400",
+            "500",
+            "600"
+          ]
+        },
+        {
+          "family": "Newsreader",
+          "share": 0.141,
+          "role": "body/ui",
+          "class": "serif",
+          "weights": [
+            "400",
+            "500"
+          ]
+        }
+      ],
+      "type": {
+        "body_px": 18.9997,
+        "body_line_height": 1.6,
+        "h1_px": 59.9888,
+        "heading_sizes_px": [
+          59.9888,
+          45.0032,
+          25.3264
+        ],
+        "ratio": 1.333,
+        "ratio_name": "~perfect fourth (1.333)",
+        "distinct_sizes": 6,
+        "heading_tracking": [
+          "-0.899832px",
+          "-0.675048px",
+          "-0.379896px"
+        ],
+        "uppercase_share": 0.008
+      },
+      "palette": {
+        "page_bg": "#f9f5ed",
+        "backgrounds": [
+          [
+            "#f9f5ed",
+            0.9723
+          ],
+          [
+            "#261d16",
+            0.0262
+          ],
+          [
+            "#c4391e",
+            0.0014
+          ],
+          [
+            "#0fb6ac",
+            0.0
+          ],
+          [
+            "#5e6ad2",
+            0.0
+          ],
+          [
+            "#cd8407",
+            0.0
+          ]
+        ],
+        "text": [
+          [
+            "#645850",
+            0.5755
+          ],
+          [
+            "#241b13",
+            0.3608
+          ],
+          [
+            "#ebe7e0",
+            0.0427
+          ],
+          [
+            "#246e3a",
+            0.0077
+          ],
+          [
+            "#b9ac99",
+            0.0066
+          ],
+          [
+            "#fdfcf8",
+            0.0053
+          ]
+        ],
+        "accents": [
+          [
+            "#c4391e",
+            1.0
+          ]
+        ],
+        "body_text_contrast": 6.33,
+        "gradients": 5,
+        "border_colors": [
+          "#d6d0c6",
+          "#241b13",
+          "#246e3a"
+        ]
+      },
+      "spacing": {
+        "base_unit": null,
+        "on_grid_share": 0.013,
+        "common_px": [
+          14.2,
+          9.5,
+          19.0,
+          28.5,
+          38.0,
+          4.7,
+          57.0,
+          2.5,
+          7.5,
+          6.4
+        ]
+      },
+      "libraries": {
+        "effects": [
+          "Paper Shaders",
+          "CSS scroll-driven animations"
+        ],
+        "fonts": [
+          "Google Fonts"
+        ]
+      }
+    }
+  },
+  "findings": [],
+  "screenshots": {
+    "desktop": [],
+    "mobile": []
+  }
+}

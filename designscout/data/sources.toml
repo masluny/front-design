@@ -1,0 +1,743 @@
+# Curated expert sources for UI/UX research.
+#
+# kind:
+#   research   = based on user studies / measured data (NN/g, Baymard, web.dev field data)
+#   standard   = normative spec (WCAG, platform guidelines)
+#   guideline  = design-system or institution guidance (GOV.UK, Material, Apple HIG)
+#   craft      = respected practitioner writing (opinion backed by experience, not studies)
+#   tool       = calculators and references used while designing
+#
+# Weigh them in that order when principles conflict: research > standard > guideline > craft.
+# `topics` and `types` drive `design-scout sources --type ...`; "*" means every page type.
+
+# ---------------------------------------------------------------- usability / critique
+
+[[source]]
+key = "nng-heuristics"
+title = "10 Usability Heuristics for User Interface Design"
+author = "Jakob Nielsen, Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/ten-usability-heuristics/"
+kind = "research"
+topics = ["usability", "critique"]
+types = ["*"]
+why = "Baseline critique lens. Review every screen against it before shipping."
+
+[[source]]
+key = "nng-visual-hierarchy"
+title = "Visual Hierarchy in UX: Definition"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/visual-hierarchy-ux-definition/"
+kind = "research"
+topics = ["hierarchy", "layout"]
+types = ["*"]
+why = "Size, color, contrast and spacing as tools to rank what matters on a page."
+
+[[source]]
+key = "nng-aesthetic-usability"
+title = "The Aesthetic-Usability Effect"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/aesthetic-usability-effect/"
+kind = "research"
+topics = ["usability", "critique", "trust"]
+types = ["*"]
+why = "Why polish raises perceived usability, and why it can also hide real problems in testing."
+
+[[source]]
+key = "nng-f-pattern"
+title = "F-Shaped Pattern of Reading on the Web"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/f-shaped-pattern-reading-web-content/"
+kind = "research"
+topics = ["content", "hierarchy", "landing"]
+types = ["landing", "saas", "editorial", "docs", "ecommerce"]
+why = "Eye-tracking evidence for front-loading headings, subheads and the first words of lines."
+
+[[source]]
+key = "nng-scrolling"
+title = "Scrolling and Attention"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/scrolling-and-attention/"
+kind = "research"
+topics = ["landing", "hierarchy", "layout"]
+types = ["landing", "saas", "editorial", "ecommerce", "portfolio"]
+why = "Measured share of viewing time above vs below the fold; where to put the value proposition."
+
+[[source]]
+key = "nng-homepage"
+title = "Top 10 Guidelines for Homepage Usability"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/top-ten-guidelines-for-homepage-usability/"
+kind = "research"
+topics = ["landing", "navigation", "content"]
+types = ["landing", "saas", "ecommerce", "portfolio"]
+why = "Communicate who you are and what you do; show examples of real content."
+
+[[source]]
+key = "nng-progressive-disclosure"
+title = "Progressive Disclosure"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/progressive-disclosure/"
+kind = "research"
+topics = ["usability", "forms", "dashboard", "onboarding"]
+types = ["app", "dashboard", "saas", "mobile-app"]
+why = "Defer advanced features to keep the primary path simple."
+
+[[source]]
+key = "nng-hamburger"
+title = "Hamburger Menus and Hidden Navigation Hurt UX Metrics"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/find-navigation-mobile-even-hamburger/"
+kind = "research"
+topics = ["navigation", "mobile"]
+types = ["landing", "saas", "ecommerce", "editorial", "docs", "mobile-app"]
+why = "Visible navigation beats hidden navigation on discoverability, also on mobile."
+
+[[source]]
+key = "nng-carousels"
+title = "Designing Effective Carousels"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/designing-effective-carousels/"
+kind = "research"
+topics = ["layout", "ecommerce", "landing"]
+types = ["landing", "ecommerce", "portfolio"]
+why = "When carousels fail and how to make them usable if you must ship one."
+
+[[source]]
+key = "nng-skeleton"
+title = "Skeleton Screens 101"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/skeleton-screens/"
+kind = "research"
+topics = ["performance", "motion", "dashboard"]
+types = ["app", "dashboard", "mobile-app"]
+why = "Loading states that reduce perceived wait."
+
+[[source]]
+key = "nng-empty-states"
+title = "Designing Empty States in Complex Applications"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/empty-state-interface-design/"
+kind = "research"
+topics = ["empty-states", "onboarding", "dashboard"]
+types = ["app", "dashboard", "mobile-app"]
+why = "Empty states should teach and offer the next action, not just say 'no data'."
+
+[[source]]
+key = "nng-dashboards"
+title = "Dashboards: Making Charts and Graphs Easier to Understand"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/dashboards-preattentive/"
+kind = "research"
+topics = ["dashboard", "data-viz"]
+types = ["dashboard", "app"]
+why = "Preattentive attributes and chart choice for at-a-glance reading."
+
+[[source]]
+key = "nng-dark-mode"
+title = "Dark Mode vs. Light Mode: Which Is Better?"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/dark-mode/"
+kind = "research"
+topics = ["dark-mode", "color", "accessibility"]
+types = ["*"]
+why = "Evidence on legibility in light vs dark themes; offer a choice instead of forcing one."
+
+[[source]]
+key = "nng-animation-duration"
+title = "Executing UX Animations: Duration and Motion Characteristics"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/animation-duration/"
+kind = "research"
+topics = ["motion"]
+types = ["*"]
+why = "Concrete duration ranges and easing guidance for UI animation."
+
+[[source]]
+key = "nng-animation-usability"
+title = "The Role of Animation and Motion in UX"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/animation-purpose-ux/"
+kind = "research"
+topics = ["motion"]
+types = ["*"]
+why = "Animation should give feedback, show state change or orient the user, not decorate."
+
+[[source]]
+key = "nng-glassmorphism"
+title = "Glassmorphism: Definition and Best Practices"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/glassmorphism/"
+kind = "research"
+topics = ["color", "accessibility", "effects"]
+types = ["*"]
+why = "Translucent layers hurt legibility unless backgrounds are controlled; read before using blur or glass shaders."
+
+[[source]]
+key = "nng-flat-ui"
+title = "Flat UI Elements Attract Less Attention and Cause Uncertainty"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/flat-ui-less-attention-cause-uncertainty/"
+kind = "research"
+topics = ["usability", "hierarchy"]
+types = ["*"]
+why = "Clickable things must look clickable; weak signifiers slow users down."
+
+[[source]]
+key = "nng-form-design"
+title = "Website Forms Usability: Top 10 Recommendations"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/web-form-design/"
+kind = "research"
+topics = ["forms"]
+types = ["app", "saas", "ecommerce", "landing", "mobile-app"]
+why = "Labels, grouping, error handling and field count."
+
+[[source]]
+key = "nng-placeholders"
+title = "Placeholders in Form Fields Are Harmful"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/form-design-placeholders/"
+kind = "research"
+topics = ["forms", "accessibility"]
+types = ["app", "saas", "ecommerce", "landing", "mobile-app"]
+why = "Never replace labels with placeholder text."
+
+[[source]]
+key = "nng-microinteractions"
+title = "Microinteractions in User Experience"
+author = "Nielsen Norman Group"
+url = "https://www.nngroup.com/articles/microinteractions/"
+kind = "research"
+topics = ["motion", "craft"]
+types = ["app", "saas", "mobile-app", "dashboard"]
+why = "Trigger, rules, feedback: small interactions that make an interface feel responsive."
+
+# ---------------------------------------------------------------- laws of UX
+
+[[source]]
+key = "lawsofux"
+title = "Laws of UX"
+author = "Jon Yablonski"
+url = "https://lawsofux.com/"
+kind = "craft"
+topics = ["usability", "critique", "hierarchy"]
+types = ["*"]
+why = "Compact index of psychology principles (Jakob, Fitts, Hick, Miller, proximity...) with sources."
+
+[[source]]
+key = "lawsofux-fitts"
+title = "Fitts's Law"
+author = "Jon Yablonski"
+url = "https://lawsofux.com/fittss-law/"
+kind = "research"
+topics = ["usability", "mobile", "conversion"]
+types = ["*"]
+why = "Target size and distance; primary actions large and close to where attention is."
+
+[[source]]
+key = "lawsofux-hick"
+title = "Hick's Law"
+author = "Jon Yablonski"
+url = "https://lawsofux.com/hicks-law/"
+kind = "research"
+topics = ["usability", "navigation", "conversion"]
+types = ["*"]
+why = "More choices, slower decisions; keep primary choices few."
+
+[[source]]
+key = "lawsofux-proximity"
+title = "Law of Proximity"
+author = "Jon Yablonski"
+url = "https://lawsofux.com/law-of-proximity/"
+kind = "research"
+topics = ["layout", "spacing", "hierarchy"]
+types = ["*"]
+why = "Spacing communicates grouping; use space before borders and boxes."
+
+[[source]]
+key = "lawsofux-von-restorff"
+title = "Von Restorff Effect"
+author = "Jon Yablonski"
+url = "https://lawsofux.com/von-restorff-effect/"
+kind = "research"
+topics = ["hierarchy", "conversion", "color"]
+types = ["*"]
+why = "The item that differs is remembered; reserve the accent color for the one thing that matters."
+
+[[source]]
+key = "lawsofux-doherty"
+title = "Doherty Threshold"
+author = "Jon Yablonski"
+url = "https://lawsofux.com/doherty-threshold/"
+kind = "research"
+topics = ["performance", "motion"]
+types = ["app", "dashboard", "saas", "mobile-app"]
+why = "Responses under about 400 ms keep users engaged; use optimistic UI and motion to bridge waits."
+
+[[source]]
+key = "lawsofux-peak-end"
+title = "Peak-End Rule"
+author = "Jon Yablonski"
+url = "https://lawsofux.com/peak-end-rule/"
+kind = "research"
+topics = ["craft", "onboarding", "conversion"]
+types = ["*"]
+why = "Design the best moment and the ending deliberately; that is what users remember."
+
+# ---------------------------------------------------------------- accessibility
+
+[[source]]
+key = "wcag22"
+title = "Web Content Accessibility Guidelines (WCAG) 2.2"
+author = "W3C"
+url = "https://www.w3.org/TR/WCAG22/"
+kind = "standard"
+topics = ["accessibility"]
+types = ["*"]
+why = "The normative standard. AA is the floor, not a stretch goal."
+
+[[source]]
+key = "wcag-contrast"
+title = "Understanding SC 1.4.3: Contrast (Minimum)"
+author = "W3C WAI"
+url = "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+kind = "standard"
+topics = ["accessibility", "color", "typography"]
+types = ["*"]
+why = "4.5:1 for body text, 3:1 for large text. Check text over images and shaders too."
+
+[[source]]
+key = "wcag-target-size"
+title = "Understanding SC 2.5.8: Target Size (Minimum)"
+author = "W3C WAI"
+url = "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+kind = "standard"
+topics = ["accessibility", "mobile", "forms"]
+types = ["*"]
+why = "24 by 24 CSS px minimum target (or enough spacing)."
+
+[[source]]
+key = "wcag-animation"
+title = "Understanding SC 2.3.3: Animation from Interactions"
+author = "W3C WAI"
+url = "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+kind = "standard"
+topics = ["accessibility", "motion", "effects"]
+types = ["*"]
+why = "Motion triggered by interaction must be possible to disable; respect prefers-reduced-motion."
+
+[[source]]
+key = "wcag-focus-not-obscured"
+title = "Understanding SC 2.4.11: Focus Not Obscured (Minimum)"
+author = "W3C WAI"
+url = "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+kind = "standard"
+topics = ["accessibility", "navigation"]
+types = ["*"]
+why = "Sticky headers and cookie bars must not hide the focused element."
+
+[[source]]
+key = "a11y-project-checklist"
+title = "The A11Y Project Checklist"
+author = "The A11Y Project"
+url = "https://www.a11yproject.com/checklist/"
+kind = "guideline"
+topics = ["accessibility", "critique"]
+types = ["*"]
+why = "Practical WCAG-mapped checklist for a final pass."
+
+[[source]]
+key = "inclusive-components"
+title = "Inclusive Components"
+author = "Heydon Pickering"
+url = "https://inclusive-components.design/"
+kind = "craft"
+topics = ["accessibility", "forms", "navigation"]
+types = ["app", "saas", "dashboard", "docs"]
+why = "Accessible patterns for menus, tabs, toggles, cards, notifications."
+
+[[source]]
+key = "mdn-reduced-motion"
+title = "prefers-reduced-motion"
+author = "MDN Web Docs"
+url = "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+kind = "standard"
+topics = ["motion", "accessibility", "effects"]
+types = ["*"]
+why = "Reference for the media query every animated effect must honor."
+
+# ---------------------------------------------------------------- typography
+
+[[source]]
+key = "butterick-ten-minutes"
+title = "Typography in Ten Minutes"
+author = "Matthew Butterick, Practical Typography"
+url = "https://practicaltypography.com/typography-in-ten-minutes.html"
+kind = "craft"
+topics = ["typography"]
+types = ["*"]
+why = "Point size, line spacing, line length and font choice: the rules that fix most text."
+
+[[source]]
+key = "butterick-line-length"
+title = "Line Length"
+author = "Matthew Butterick, Practical Typography"
+url = "https://practicaltypography.com/line-length.html"
+kind = "craft"
+topics = ["typography", "layout"]
+types = ["*"]
+why = "Comfortable measure is roughly 45 to 90 characters per line."
+
+[[source]]
+key = "webtypography"
+title = "The Elements of Typographic Style Applied to the Web"
+author = "Richard Rutter"
+url = "http://webtypography.net/"
+kind = "craft"
+topics = ["typography"]
+types = ["editorial", "docs", "portfolio", "landing"]
+why = "Bringhurst's principles translated to CSS: rhythm, measure, scale."
+
+[[source]]
+key = "utopia-fluid-type"
+title = "Designing with fluid type scales"
+author = "James Gilyead and Trys Mudford, Utopia"
+url = "https://utopia.fyi/blog/designing-with-fluid-type-scales/"
+kind = "craft"
+topics = ["typography", "layout", "spacing"]
+types = ["*"]
+why = "One modular scale interpolated between a small and a large viewport via clamp(). `design-scout scale` implements it."
+
+[[source]]
+key = "modern-font-stacks"
+title = "Modern Font Stacks"
+author = "Dan Klammer"
+url = "https://modernfontstacks.com/"
+kind = "tool"
+topics = ["typography", "performance"]
+types = ["*"]
+why = "System font stacks grouped by typeface classification; zero-download fallbacks."
+
+# ---------------------------------------------------------------- color
+
+[[source]]
+key = "stripe-accessible-colors"
+title = "Designing accessible color systems"
+author = "Daryl Koopersmith and Wilson Miner, Stripe"
+url = "https://stripe.com/blog/accessible-color-systems"
+kind = "craft"
+topics = ["color", "accessibility", "design-systems"]
+types = ["*"]
+why = "Building a palette in a perceptual color space so contrast is predictable per step."
+
+[[source]]
+key = "evilmartians-oklch"
+title = "OKLCH in CSS: why we moved from RGB and HSL"
+author = "Andrey Sitnik and Travis Turner, Evil Martians"
+url = "https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl"
+kind = "craft"
+topics = ["color", "design-systems"]
+types = ["*"]
+why = "Perceptually uniform palettes and predictable lightness steps with oklch()."
+
+[[source]]
+key = "radix-color-scale"
+title = "Understanding the scale (Radix Colors)"
+author = "WorkOS / Radix"
+url = "https://www.radix-ui.com/colors/docs/palette-composition/understanding-the-scale"
+kind = "guideline"
+topics = ["color", "design-systems", "dark-mode"]
+types = ["*"]
+why = "12-step scale with a defined job per step (backgrounds, borders, solid, text)."
+
+[[source]]
+key = "material-color"
+title = "Color system overview (Material Design 3)"
+author = "Google"
+url = "https://m3.material.io/styles/color/system/overview"
+kind = "guideline"
+topics = ["color", "design-systems", "dark-mode"]
+types = ["app", "mobile-app", "dashboard"]
+why = "Role-based color tokens (primary, surface, on-surface...) and tonal palettes."
+
+[[source]]
+key = "refactoring-ui"
+title = "Refactoring UI"
+author = "Adam Wathan and Steve Schoger"
+url = "https://www.refactoringui.com/"
+kind = "craft"
+topics = ["hierarchy", "color", "spacing", "typography", "craft"]
+types = ["*"]
+why = "Hierarchy via weight and color instead of size alone, spacing systems, shadows. Book is paid; cite the free previews."
+
+# ---------------------------------------------------------------- layout / spacing / CSS craft
+
+[[source]]
+key = "every-layout"
+title = "Every Layout"
+author = "Heydon Pickering and Andy Bell"
+url = "https://every-layout.dev/"
+kind = "craft"
+topics = ["layout", "spacing"]
+types = ["*"]
+why = "Intrinsic layout primitives (stack, cluster, sidebar, switcher) that need no breakpoints."
+
+[[source]]
+key = "defensive-css"
+title = "Defensive CSS"
+author = "Ahmad Shadeed"
+url = "https://defensivecss.dev/"
+kind = "craft"
+topics = ["layout", "craft"]
+types = ["*"]
+why = "Patterns that keep layouts from breaking with long text, missing images and odd viewports."
+
+[[source]]
+key = "eightshapes-space"
+title = "Space in Design Systems"
+author = "Nathan Curtis, EightShapes"
+url = "https://medium.com/eightshapes-llc/space-in-design-systems-188bcbae0d62"
+kind = "craft"
+topics = ["spacing", "design-systems", "layout"]
+types = ["*"]
+why = "Inset, stack and inline spacing concepts with a non-linear scale. Medium blocks scripts: read it in a browser."
+
+[[source]]
+key = "comeau-grid"
+title = "An Interactive Guide to CSS Grid"
+author = "Josh W. Comeau"
+url = "https://www.joshwcomeau.com/css/interactive-guide-to-grid/"
+kind = "craft"
+topics = ["layout"]
+types = ["*"]
+why = "Grid mental model for building the layouts seen in references."
+
+[[source]]
+key = "comeau-shadows"
+title = "Designing Beautiful Shadows in CSS"
+author = "Josh W. Comeau"
+url = "https://www.joshwcomeau.com/css/designing-shadows/"
+kind = "craft"
+topics = ["craft", "color"]
+types = ["*"]
+why = "Consistent light source, layered shadows, color-tinted shadows."
+
+# ---------------------------------------------------------------- interaction craft / motion
+
+[[source]]
+key = "vercel-guidelines"
+title = "Web Interface Guidelines"
+author = "Vercel"
+url = "https://vercel.com/design/guidelines"
+kind = "craft"
+topics = ["craft", "accessibility", "forms", "motion", "performance"]
+types = ["*"]
+why = "Dense checklist of interaction details: focus, forms, hit targets, animation, copy."
+
+[[source]]
+key = "rauno-interaction"
+title = "Invisible Details of Interaction Design"
+author = "Rauno Freiberg"
+url = "https://rauno.me/craft/interaction-design"
+kind = "craft"
+topics = ["craft", "motion"]
+types = ["app", "saas", "portfolio", "mobile-app"]
+why = "Why some interfaces feel 'right': metaphors, kinetics, frequency of use."
+
+[[source]]
+key = "emil-great-animations"
+title = "Great Animations"
+author = "Emil Kowalski"
+url = "https://emilkowal.ski/ui/great-animations"
+kind = "craft"
+topics = ["motion", "craft"]
+types = ["*"]
+why = "Fast, purposeful, interruptible animation; ease-out for entering elements."
+
+[[source]]
+key = "emil-no-animations"
+title = "You Don't Need Animations"
+author = "Emil Kowalski"
+url = "https://emilkowal.ski/ui/you-dont-need-animations"
+kind = "craft"
+topics = ["motion", "craft", "effects"]
+types = ["*"]
+why = "Counterweight before adding effects: frequency of use decides whether motion helps."
+
+[[source]]
+key = "material-motion"
+title = "Easing and duration (Material Design 3)"
+author = "Google"
+url = "https://m3.material.io/styles/motion/easing-and-duration/tokens-specs"
+kind = "guideline"
+topics = ["motion", "design-systems"]
+types = ["*"]
+why = "Duration and easing tokens with concrete values."
+
+[[source]]
+key = "apple-hig"
+title = "Human Interface Guidelines"
+author = "Apple"
+url = "https://developer.apple.com/design/human-interface-guidelines/"
+kind = "guideline"
+topics = ["mobile", "navigation", "typography", "motion", "accessibility"]
+types = ["mobile-app", "app"]
+why = "Platform conventions; hit targets, typography and motion for Apple platforms."
+
+[[source]]
+key = "apple-hig-motion"
+title = "Motion (Human Interface Guidelines)"
+author = "Apple"
+url = "https://developer.apple.com/design/human-interface-guidelines/motion"
+kind = "guideline"
+topics = ["motion"]
+types = ["mobile-app", "app", "landing"]
+why = "Purposeful, brief, optional motion; respect Reduce Motion."
+
+[[source]]
+key = "material3"
+title = "Material Design 3"
+author = "Google"
+url = "https://m3.material.io/"
+kind = "guideline"
+topics = ["design-systems", "mobile", "navigation", "forms"]
+types = ["mobile-app", "app", "dashboard"]
+why = "Component behavior, layout grids and adaptive navigation patterns."
+
+[[source]]
+key = "govuk-design-system"
+title = "GOV.UK Design System"
+author = "Government Digital Service"
+url = "https://design-system.service.gov.uk/"
+kind = "guideline"
+topics = ["forms", "accessibility", "content", "usability"]
+types = ["app", "saas", "ecommerce", "docs"]
+why = "Research-tested patterns for forms, questions, errors and content clarity."
+
+[[source]]
+key = "chrome-view-transitions"
+title = "Smooth transitions with the View Transition API"
+author = "Chrome for Developers"
+url = "https://developer.chrome.com/docs/web-platform/view-transitions"
+kind = "guideline"
+topics = ["motion", "effects", "navigation"]
+types = ["*"]
+why = "Native page and state transitions without a JS animation library."
+
+[[source]]
+key = "chrome-scroll-driven"
+title = "Animate elements on scroll with Scroll-driven animations"
+author = "Chrome for Developers"
+url = "https://developer.chrome.com/docs/css-ui/scroll-driven-animations"
+kind = "guideline"
+topics = ["motion", "effects"]
+types = ["landing", "saas", "portfolio", "editorial"]
+why = "Scroll effects off the main thread with animation-timeline: view()/scroll()."
+
+# ---------------------------------------------------------------- performance
+
+[[source]]
+key = "webdev-vitals"
+title = "Web Vitals"
+author = "web.dev (Google)"
+url = "https://web.dev/articles/vitals"
+kind = "research"
+topics = ["performance"]
+types = ["*"]
+why = "LCP, INP, CLS thresholds measured on real users; heavy effects must not break them."
+
+[[source]]
+key = "webdev-lcp"
+title = "Optimize Largest Contentful Paint"
+author = "web.dev (Google)"
+url = "https://web.dev/articles/optimize-lcp"
+kind = "research"
+topics = ["performance", "landing"]
+types = ["landing", "saas", "ecommerce", "portfolio", "editorial"]
+why = "Hero images, fonts and WebGL canvases are the usual LCP culprits."
+
+[[source]]
+key = "webdev-cls"
+title = "Cumulative Layout Shift (CLS)"
+author = "web.dev (Google)"
+url = "https://web.dev/articles/cls"
+kind = "research"
+topics = ["performance", "layout"]
+types = ["*"]
+why = "Reserve space for media, embeds and late-loading fonts."
+
+[[source]]
+key = "webdev-animations"
+title = "How to create high-performance CSS animations"
+author = "web.dev (Google)"
+url = "https://web.dev/articles/animations-guide"
+kind = "guideline"
+topics = ["performance", "motion", "effects"]
+types = ["*"]
+why = "Animate transform and opacity; avoid layout-triggering properties."
+
+# ---------------------------------------------------------------- conversion / ecommerce
+
+[[source]]
+key = "baymard-checkout"
+title = "Checkout UX: current state"
+author = "Baymard Institute"
+url = "https://baymard.com/blog/current-state-of-checkout-ux"
+kind = "research"
+topics = ["checkout", "ecommerce", "forms", "conversion"]
+types = ["ecommerce"]
+why = "Large-scale benchmark of checkout usability issues and abandonment causes."
+
+[[source]]
+key = "baymard-inline-validation"
+title = "Usability Testing of Inline Form Validation"
+author = "Baymard Institute"
+url = "https://baymard.com/blog/inline-form-validation"
+kind = "research"
+topics = ["forms", "checkout"]
+types = ["ecommerce", "app", "saas"]
+why = "When and how to validate fields inline without punishing users."
+
+[[source]]
+key = "baymard-form-fields"
+title = "Checkout Optimization: Reduce Form Fields"
+author = "Baymard Institute"
+url = "https://baymard.com/blog/checkout-flow-average-form-fields"
+kind = "research"
+topics = ["forms", "checkout", "conversion"]
+types = ["ecommerce", "saas"]
+why = "Average field counts vs what is actually needed."
+
+[[source]]
+key = "julian-landing-pages"
+title = "Landing Pages (Growth Guide)"
+author = "Julian Shapiro"
+url = "https://www.julian.com/guide/growth/landing-pages"
+kind = "craft"
+topics = ["landing", "conversion", "content"]
+types = ["landing", "saas"]
+why = "Header and subheader formulas, objection handling, social proof placement."
+
+# ---------------------------------------------------------------- mobile
+
+[[source]]
+key = "hoober-fingers"
+title = "Design for Fingers, Touch, and People, Part 1"
+author = "Steven Hoober, UXmatters"
+url = "https://www.uxmatters.com/mt/archives/2017/03/design-for-fingers-touch-and-people-part-1.php"
+kind = "research"
+topics = ["mobile", "usability"]
+types = ["mobile-app", "app", "ecommerce", "landing"]
+why = "Observational data on how people actually hold phones and where they tap."
+
+# ---------------------------------------------------------------- design systems
+
+[[source]]
+key = "shadcn-ui"
+title = "shadcn/ui"
+author = "shadcn"
+url = "https://ui.shadcn.com/"
+kind = "tool"
+topics = ["design-systems", "forms", "navigation"]
+types = ["app", "saas", "dashboard", "landing"]
+why = "Accessible Radix-based component baseline that most effect libraries (Magic UI, Aceternity, React Bits) plug into."

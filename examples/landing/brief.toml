@@ -1,0 +1,18 @@
+# design-scout brief. Fill the empty fields before research (ask the user or state assumptions).
+
+[brief]
+title = "design-scout: landing page"
+summary = """
+Landing page for design-scout, a research-first UI/UX design skill and CLI for AI coding agents
+"""
+type = "landing"          # landing | saas | ecommerce | dashboard | portfolio | editorial | docs | app | mobile-app
+stack = "vanilla"        # react-tailwind | next | vanilla | vue | astro | svelte | unknown
+audience = "Developers and designers who build web UIs with AI coding agents (Claude Code, Codex, Cursor) and are tired of generic, template-looking output"
+primary_action = "Install the CLI and the skill (copy the install commands)"
+brand_adjectives = ["rigorous", "crafted", "warm"]
+constraints = ["WCAG 2.2 AA", "single static HTML file, readable without JavaScript", "no invented users, logos, testimonials or stats: only real measured output from the tool", "no public repo URL yet: mark it as a placeholder", "page weight under 1.5 MB"]
+competitors = ["https://impeccable.style/"]
+language = "en"
+
+[research]
+topics = ["hierarchy", "landing", "conversion", "typography", "color", "motion", "performance", "accessibility", "trust"]

@@ -1,0 +1,29 @@
+[
+  {
+    "key": "paper-grain-gradient",
+    "name": "Paper Shaders: Grain Gradient",
+    "role": "signature",
+    "why": "Tactile, print-like color field inside the FIG. 1 plate: the one rich material on a paper page (warm, crafted); speed 0 under reduced motion",
+    "package": "@paper-design/shaders-react",
+    "version": "0.0.81",
+    "url": "https://shaders.paper.design/grain-gradient"
+  },
+  {
+    "key": "scroll-driven",
+    "name": "Web platform: CSS scroll-driven animations",
+    "role": "support",
+    "why": "Highlighter that draws under key phrases as they enter view, pointing at the words that matter; zero JS, gated by @supports and reduced motion",
+    "package": "none (native)",
+    "version": "Chromium + Safari 26; progressive enhancement elsewhere",
+    "url": "https://developer.chrome.com/docs/css-ui/scroll-driven-animations"
+  },
+  {
+    "key": "modern-css",
+    "name": "Web platform: Modern CSS finishing kit",
+    "role": "support",
+    "why": "text-wrap balance/pretty for headings and copy, oklch palette, color-mix tints",
+    "package": "none (native)",
+    "version": "Baseline 2024-2026 features",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/CSS"
+  }
+]

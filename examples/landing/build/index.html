@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>design-scout: research-first UI design for AI coding agents</title>
+<meta name="description" content="design-scout is a skill and CLI for Claude Code, Codex and Cursor: your agent reads expert sources, measures professional sites, picks one modern effect with a reason and audits the result before you see it.">
+<meta name="theme-color" content="#f6f2ea">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap">
+<style>
+/* design-scout scale: 17.0px @360px ratio 1.2 -> 19.0px @1440px ratio 1.333 (minor third -> perfect fourth) */
+:root {
+  --step--2: clamp(0.6683rem, 0.761rem - 0.103vw, 0.7378rem);  /* 11.8px -> 10.7px */
+  --step--1: clamp(0.8854rem, 0.8836rem + 0.008vw, 0.8908rem);  /* 14.2px -> 14.3px */
+  --step-0: clamp(1.0625rem, 1.0208rem + 0.1852vw, 1.1875rem);  /* 17.0px -> 19.0px */
+  --step-1: clamp(1.275rem, 1.1724rem + 0.4562vw, 1.5829rem);  /* 20.4px -> 25.3px */
+  --step-2: clamp(1.53rem, 1.3366rem + 0.8593vw, 2.1101rem);  /* 24.5px -> 33.8px */
+  --step-3: clamp(1.836rem, 1.5104rem + 1.447vw, 2.8127rem);  /* 29.4px -> 45.0px */
+  --step-4: clamp(2.2032rem, 1.6878rem + 2.2906vw, 3.7493rem);  /* 35.3px -> 60.0px */
+  --step-5: clamp(2.6438rem, 1.8592rem + 3.4874vw, 4.9979rem);  /* 42.3px -> 80.0px */
+  --space-3xs: clamp(0.2656rem, 0.2552rem + 0.0463vw, 0.2969rem);  /* 4.2px -> 4.8px */
+  --space-2xs: clamp(0.5312rem, 0.5104rem + 0.0926vw, 0.5938rem);  /* 8.5px -> 9.5px */
+  --space-xs: clamp(0.7969rem, 0.7656rem + 0.1389vw, 0.8906rem);  /* 12.8px -> 14.2px */
+  --space-s: clamp(1.0625rem, 1.0208rem + 0.1852vw, 1.1875rem);  /* 17.0px -> 19.0px */
+  --space-m: clamp(1.5938rem, 1.5312rem + 0.2778vw, 1.7812rem);  /* 25.5px -> 28.5px */
+  --space-l: clamp(2.125rem, 2.0417rem + 0.3704vw, 2.375rem);  /* 34.0px -> 38.0px */
+  --space-xl: clamp(3.1875rem, 3.0625rem + 0.5556vw, 3.5625rem);  /* 51.0px -> 57.0px */
+  --space-2xl: clamp(4.25rem, 4.0833rem + 0.7407vw, 4.75rem);  /* 68.0px -> 76.0px */
+  --space-3xl: clamp(6.375rem, 6.125rem + 1.1111vw, 7.125rem);  /* 102.0px -> 114.0px */
+  --space-s-l: clamp(1.0625rem, 0.625rem + 1.9444vw, 2.375rem);  /* 17.0px -> 38.0px */
+  --space-m-xl: clamp(1.5938rem, 0.9375rem + 2.9167vw, 3.5625rem);  /* 25.5px -> 57.0px */
+  --space-l-2xl: clamp(2.125rem, 1.25rem + 3.8889vw, 4.75rem);  /* 34.0px -> 76.0px */
+  --space-xl-3xl: clamp(3.1875rem, 1.875rem + 5.8333vw, 7.125rem);  /* 51.0px -> 114.0px */
+}
+
+/* color: oklch, every used pair checked with design-scout contrast (AA) */
+:root {
+  --paper: oklch(0.972 0.012 85);      /* page */
+  --paper-2: oklch(0.945 0.016 85);    /* plates, table header */
+  --ink: oklch(0.23 0.02 60);          /* 15.6:1 on paper */
+  --muted: oklch(0.47 0.02 60);        /* 6.3:1 on paper, 5.8:1 on paper-2 */
+  --rule: oklch(0.86 0.015 80);        /* decorative hairlines only */
+  --accent: oklch(0.55 0.18 33);       /* vermilion: primary action + stamps; 4.9:1 on paper */
+  --on-accent: oklch(0.99 0.005 85);   /* 5.1:1 on accent */
+  --marker: oklch(0.92 0.11 95);       /* highlighter; ink 13.4:1, muted 5.4:1 on it */
+  --verified: oklch(0.48 0.11 150);    /* 5.7:1 on paper */
+  --code-bg: oklch(0.24 0.02 60);
+  --code-text: oklch(0.93 0.01 85);    /* 13.4:1 on code-bg */
+  --code-dim: oklch(0.75 0.03 75);     /* 7.4:1 on code-bg */
+
+  --font-display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-text: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-control: 6px;
+  --radius-stamp: 2px;
+  --measure: 62ch;
+  --page-max: 76rem;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-ui: 200ms;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 5rem; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 var(--step-0)/1.6 var(--font-text);
+  text-rendering: optimizeLegibility;
+}
+img, svg, canvas { display: block; max-width: 100%; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 500; line-height: 1.08; letter-spacing: -0.015em; margin: 0; text-wrap: balance; }
+p { margin: 0; text-wrap: pretty; }
+code, kbd, pre { font-family: var(--font-mono); font-size: 0.88em; }
+
+.skip { position: absolute; left: var(--space-s); top: -4rem; background: var(--ink); color: var(--paper); padding: var(--space-2xs) var(--space-xs); z-index: 10; }
+.skip:focus { top: var(--space-s); }
+
+.wrap { max-width: var(--page-max); margin-inline: auto; padding-inline: var(--space-s-l); }
+/* grid items default to min-width:auto; long command lines must scroll inside their block, not widen the page */
+.hero-grid > *, .install-grid > *, .two-col > *, .terminal { min-width: 0; }
+
+/* ---------------------------------------------------------- header */
+.site-header {
+  position: sticky; top: 0; z-index: 5;
+  background: color-mix(in oklch, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--space-s); min-height: 3.75rem; }
+.brand { display: inline-flex; align-items: center; gap: var(--space-2xs); font: 500 var(--step--1)/1 var(--font-mono); text-decoration: none; letter-spacing: 0.02em; }
+.brand-mark { width: 1.25rem; height: 1.25rem; border: 1.5px solid var(--ink); border-radius: 50%; position: relative; }
+.brand-mark::after { content: ""; position: absolute; width: 0.55rem; height: 1.5px; background: var(--ink); right: -0.42rem; bottom: -0.12rem; transform: rotate(45deg); }
+.nav { display: flex; align-items: center; gap: var(--space-m); font-size: var(--step--1); }
+.nav ul { display: flex; gap: var(--space-m); list-style: none; margin: 0; padding: 0; }
+.nav ul a { text-decoration: none; color: var(--muted); padding-block: var(--space-2xs); }
+.nav ul a:hover { color: var(--ink); text-decoration: underline; }
+@media (max-width: 52rem) { .nav ul { display: none; } }
+
+/* ---------------------------------------------------------- buttons, commands */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5em; min-height: 2.75rem;
+  padding: 0 1.1em; border: 0; border-radius: var(--radius-control);
+  background: var(--accent); color: var(--on-accent);
+  font: 600 var(--step--1)/1 var(--font-text); text-decoration: none; cursor: pointer;
+  box-shadow: 0 2px 0 color-mix(in oklch, var(--accent) 55%, var(--ink));
+  transition: transform var(--dur-ui) var(--ease-out), box-shadow var(--dur-ui) var(--ease-out);
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 3px 0 color-mix(in oklch, var(--accent) 55%, var(--ink)); text-decoration: none; }
+.btn:active { transform: translateY(1px); box-shadow: 0 1px 0 color-mix(in oklch, var(--accent) 55%, var(--ink)); }
+.btn-small { min-height: 2.5rem; }
+
+.terminal { background: var(--code-bg); color: var(--code-text); border-radius: var(--radius-control); overflow: hidden; }
+.terminal-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-xs); padding: var(--space-2xs) var(--space-xs) var(--space-2xs) var(--space-s); border-bottom: 1px solid color-mix(in oklch, var(--code-text) 14%, transparent); font: 400 var(--step--1)/1.4 var(--font-mono); color: var(--code-dim); }
+.terminal pre { margin: 0; padding: var(--space-s); overflow-x: auto; line-height: 1.7; font-size: var(--step--1); }
+.terminal .prompt { color: var(--marker); user-select: none; }
+.terminal .comment { color: var(--code-dim); }
+.copy-btn { min-height: 2.5rem; padding: 0 0.9em; border-radius: var(--radius-control); border: 0; background: var(--accent); color: var(--on-accent); font: 600 var(--step--1)/1 var(--font-text); cursor: pointer; }
+.copy-btn[hidden] { display: none; }
+
+/* ---------------------------------------------------------- hero */
+.hero { padding-block: var(--space-xl-3xl) var(--space-xl); }
+.hero-grid { display: grid; gap: var(--space-xl); align-items: start; }
+@media (min-width: 60rem) { .hero-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: var(--space-2xl); } }
+.eyebrow { font: 500 var(--step--1)/1.4 var(--font-mono); color: var(--muted); letter-spacing: 0.02em; margin-bottom: var(--space-m); }
+.hero h1 { font-size: var(--step-5); font-weight: 500; }
+/* two-column hero: one step down so the H1 sets in two lines and the install block stays above the fold (P3) */
+@media (min-width: 60rem) { .hero h1 { font-size: var(--step-4); } }
+.hero h1 .second { display: block; font-style: italic; font-weight: 400; color: var(--muted); }
+.lede { margin-top: var(--space-m); max-width: var(--measure); font-size: var(--step-1); line-height: 1.5; }
+.hero-actions { margin-top: var(--space-l); display: grid; gap: var(--space-s); max-width: 40rem; }
+.hero-actions .alt { font-size: var(--step--1); color: var(--muted); }
+.hero-actions .alt a { color: var(--ink); }
+
+.plate { position: relative; margin: 0; }
+.plate-frame {
+  position: relative; aspect-ratio: 4 / 5; border: 1px solid var(--rule); padding: var(--space-xs); background: var(--paper-2);
+}
+.plate-frame::before, .plate-frame::after { content: ""; position: absolute; width: 0.7rem; height: 0.7rem; border-color: var(--ink); border-style: solid; }
+.plate-frame::before { top: -0.36rem; left: -0.36rem; border-width: 1px 0 0 1px; }
+.plate-frame::after { bottom: -0.36rem; right: -0.36rem; border-width: 0 1px 1px 0; }
+.specimen {
+  position: absolute; inset: var(--space-xs); overflow: hidden;
+  /* static fallback (no JS / before the shader mounts): the same sphere, without grain */
+  background:
+    radial-gradient(circle closest-side at 56% 40%, oklch(0.9 0.08 95) 0%, oklch(0.4 0.04 160) 52%,
+                    oklch(0.55 0.17 35) 86%, oklch(0.93 0.02 80) 87%),
+    oklch(0.93 0.02 80);
+}
+.specimen canvas { width: 100% !important; height: 100% !important; }
+.specimen-label {
+  position: absolute; left: calc(var(--space-xs) * 2); bottom: calc(var(--space-xs) * 2);
+  background: var(--paper); color: var(--ink); border: 1px solid var(--ink); border-radius: var(--radius-stamp);
+  padding: 0.35em 0.6em; font: 500 var(--step--1)/1.3 var(--font-mono);
+}
+.plate figcaption { margin-top: var(--space-xs); font: 400 var(--step--1)/1.5 var(--font-mono); color: var(--muted); max-width: 48ch; }
+.fig { color: var(--ink); font-weight: 500; }
+
+/* ---------------------------------------------------------- sections */
+.section { padding-block: var(--space-xl) var(--space-xl-3xl); border-top: 1px solid var(--rule); }
+.section-head { display: grid; gap: var(--space-s); margin-bottom: var(--space-xl); }
+@media (min-width: 60rem) { .section-head { grid-template-columns: 12rem minmax(0, 1fr); align-items: baseline; } }
+.label { font: 500 var(--step--1)/1.4 var(--font-mono); color: var(--muted); letter-spacing: 0.02em; }
+.section h2 { font-size: var(--step-3); max-width: 22ch; }
+.section-head p { grid-column: 1 / -1; max-width: var(--measure); color: var(--muted); }
+@media (min-width: 60rem) { .section-head p { grid-column: 2; } }
+
+/* highlighter (static by default, drawn on scroll where supported) */
+.mark {
+  background-image: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 92%, transparent 92%);
+  background-repeat: no-repeat; background-size: 100% 100%;
+  padding-inline: 0.06em; box-decoration-break: clone; -webkit-box-decoration-break: clone;
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .section .mark { animation: draw linear both; animation-timeline: view(); animation-range: entry 100% cover 35%; }
+    @keyframes draw { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
+  }
+}
+
+/* the loop */
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+.steps li { display: grid; gap: var(--space-2xs) var(--space-m); padding-block: var(--space-m); border-top: 1px solid var(--rule); }
+.steps li:last-child { border-bottom: 1px solid var(--rule); }
+@media (min-width: 60rem) { .steps li { grid-template-columns: 12rem minmax(0, 1fr) minmax(0, 1.1fr); align-items: baseline; } }
+.step-no { font: 500 var(--step--1)/1.4 var(--font-mono); color: var(--muted); }
+.steps h3 { font-size: var(--step-1); }
+.steps p { color: var(--muted); max-width: 52ch; }
+.steps code { display: inline-block; margin-top: var(--space-3xs); background: var(--paper-2); border: 1px solid var(--rule); border-radius: var(--radius-stamp); padding: 0.15em 0.45em; color: var(--ink); overflow-wrap: anywhere; }
+
+/* evidence */
+.quotes { display: grid; gap: var(--space-l); }
+@media (min-width: 60rem) { .quotes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; } .quotes figure + figure { border-left: 1px solid var(--rule); } .quotes figure { padding-inline: var(--space-m); } .quotes figure:first-child { padding-left: 0; } }
+.quotes figure { margin: 0; display: grid; gap: var(--space-s); align-content: start; }
+.quotes blockquote { margin: 0; font: italic 400 var(--step-1)/1.4 var(--font-display); }
+.quotes .principle { font-weight: 600; font-size: var(--step--1); }
+.quotes figcaption { font-size: var(--step--1); color: var(--muted); display: grid; gap: var(--space-2xs); }
+.stamp {
+  justify-self: start; display: inline-flex; align-items: center; gap: 0.4em;
+  border: 1.5px solid var(--verified); color: var(--verified); border-radius: var(--radius-stamp);
+  padding: 0.2em 0.5em; font: 600 var(--step--1)/1.2 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase;
+  transform: rotate(-1.5deg);
+}
+.stamp.bad { border-color: var(--accent); color: var(--accent); transform: rotate(1deg); }
+
+/* figure table */
+.table-scroll { overflow-x: auto; border-top: 1px solid var(--ink); }
+tbody tr:last-child > * { border-bottom: 1px solid var(--ink); }
+table { width: 100%; border-collapse: collapse; font-size: var(--step--1); min-width: 44rem; }
+caption { caption-side: bottom; text-align: left; padding-top: var(--space-xs); font: 400 var(--step--1)/1.5 var(--font-mono); color: var(--muted); }
+th, td { text-align: left; padding: var(--space-xs) var(--space-xs) var(--space-xs) 0; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
+thead th { font: 500 var(--step--1)/1.3 var(--font-mono); color: var(--muted); }
+tbody th { font-weight: 600; }
+td.num { font-family: var(--font-mono); }
+.swatch { display: inline-flex; align-items: center; gap: 0.45em; font-family: var(--font-mono); }
+.swatch i { width: 0.9em; height: 0.9em; border-radius: 2px; border: 1px solid color-mix(in oklch, var(--ink) 25%, transparent); }
+
+/* effects */
+.two-col { display: grid; gap: var(--space-xl); }
+@media (min-width: 60rem) { .two-col { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-2xl); } }
+.catalog { margin: 0; display: grid; gap: var(--space-s); }
+.catalog div { display: grid; gap: var(--space-3xs); padding-bottom: var(--space-s); border-bottom: 1px solid var(--rule); }
+.catalog dt { font: 500 var(--step--1)/1.4 var(--font-mono); color: var(--muted); }
+.catalog dd { margin: 0; }
+.rules { margin: 0; padding: 0; list-style: none; counter-reset: rule; display: grid; gap: var(--space-m); }
+.rules li { counter-increment: rule; display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: var(--space-xs); }
+.rules li::before { content: counter(rule, decimal-leading-zero); font: 500 var(--step--1)/1.9 var(--font-mono); color: var(--muted); }
+.rules strong { display: block; font: 500 var(--step-1)/1.25 var(--font-display); margin-bottom: var(--space-3xs); }
+.rules p { color: var(--muted); }
+
+/* audit readout */
+.readout { display: grid; gap: var(--space-l); margin-bottom: var(--space-xl); }
+@media (min-width: 48rem) { .readout { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; } .readout > div + div { border-left: 1px solid var(--rule); padding-left: var(--space-m); } }
+.readout .score { font: 400 var(--step-5)/1 var(--font-display); letter-spacing: -0.03em; overflow-wrap: anywhere; }
+.readout .score small { font-size: 0.35em; color: var(--muted); letter-spacing: 0; }
+.readout p { color: var(--muted); font-size: var(--step--1); margin-top: var(--space-2xs); max-width: 30ch; }
+.checks { columns: 2 18rem; column-gap: var(--space-xl); margin: 0; padding-left: 1.1em; color: var(--muted); }
+.checks li { break-inside: avoid; margin-bottom: var(--space-2xs); }
+.checks li::marker { color: var(--ink); }
+
+/* install */
+.install-grid { display: grid; gap: var(--space-l); align-items: start; }
+@media (min-width: 60rem) { .install-grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: var(--space-2xl); } }
+.agents { margin: var(--space-m) 0 0; padding: 0; list-style: none; display: grid; gap: var(--space-2xs); }
+.agents li { display: flex; justify-content: space-between; gap: var(--space-s); border-bottom: 1px solid var(--rule); padding-bottom: var(--space-2xs); }
+.agents code { color: var(--muted); }
+.placeholder-note { margin-top: var(--space-xs); font-size: var(--step--1); color: var(--muted); }
+
+footer { border-top: 1px solid var(--ink); padding-block: var(--space-l) var(--space-xl); font-size: var(--step--1); color: var(--muted); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: var(--space-s) var(--space-l); justify-content: space-between; }
+footer a { color: var(--ink); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="design-scout, back to top"><span class="brand-mark" aria-hidden="true"></span>design-scout</a>
+    <nav class="nav" aria-label="Main">
+      <ul>
+        <li><a href="#loop">How it works</a></li>
+        <li><a href="#evidence">Evidence</a></li>
+        <li><a href="#effects">Effects</a></li>
+        <li><a href="#audit">Audit</a></li>
+      </ul>
+      <a class="btn btn-small" href="#install">Install</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Agent skill + CLI for Claude Code, Codex and Cursor · MIT</p>
+        <h1 id="hero-title">Research‑first UI design <span class="second">for your AI coding agent.</span></h1>
+        <p class="lede">design-scout makes your agent <span class="mark">read the experts and measure professional sites</span> before it designs, add one modern effect with a reason, and audit the result until it passes.</p>
+        <div class="hero-actions">
+          <div class="terminal">
+            <div class="terminal-bar"><span>Install</span><button class="copy-btn" type="button" data-copy="install-cmds" hidden>Copy commands</button></div>
+<pre id="install-cmds"><code><span class="prompt">$ </span>pip install -e ".[capture]"
+<span class="prompt">$ </span>python -m playwright install chromium
+<span class="prompt">$ </span>design-scout install-skill</code></pre>
+          </div>
+          <p class="alt">Run inside a local checkout. Then ask your agent to design something, or <a href="#loop">see the seven steps it follows</a>.</p>
+        </div>
+      </div>
+
+      <figure class="plate">
+        <div class="plate-frame">
+          <div class="specimen" id="specimen" aria-hidden="true"></div>
+          <span class="specimen-label">paper-grain-gradient · sphere · 0.0.81</span>
+        </div>
+        <figcaption><span class="fig">FIG. 1</span> Grain Gradient from Paper Shaders, rendered live. The only effect on this page; it holds still when your system asks for reduced motion.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="loop" aria-labelledby="loop-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">01 / The loop</span>
+        <h2 id="loop-title">Seven steps, each one checked</h2>
+        <p>Your agent still makes the design calls. The CLI does the parts that should be objective: sources, measurements, scales, contrast and the audit.</p>
+      </div>
+      <ol class="steps">
+        <li><span class="step-no">01 Brief</span><h3>Pin down audience and the one action</h3><div><p>Three brand adjectives, constraints and competitors go into brief.toml.</p><code>design-scout init "…" --type landing</code></div></li>
+        <li><span class="step-no">02 Principles</span><h3>Read the experts, quote them exactly</h3><div><p>71 curated sources ranked by evidence. Every quote is checked against the live page.</p><code>design-scout note add --quote "…"</code></div></li>
+        <li><span class="step-no">03 References</span><h3>Measure real professional sites</h3><div><p>Desktop and mobile screenshots plus fonts, type scale, palette, spacing and effect libraries.</p><code>design-scout capture &lt;urls&gt;</code></div></li>
+        <li><span class="step-no">04 Direction</span><h3>Decide with reasons, lock tokens</h3><div><p>Two or three real options, each citing principles and references. Fluid type scale, contrast matrix.</p><code>design-scout scale --space</code></div></li>
+        <li><span class="step-no">05 Effects</span><h3>Choose one signature effect</h3><div><p>28 effects with pinned versions, licenses and a reduced-motion path for each.</p><code>design-scout effects --vibe warm</code></div></li>
+        <li><span class="step-no">06 Build</span><h3>Build with real copy and tokens only</h3><div><p>No lorem ipsum, no invented customers or numbers, every state designed.</p><code>build/index.html</code></div></li>
+        <li><span class="step-no">07 Audit</span><h3>Audit until it passes, then hand over</h3><div><p>Contrast on real pixels, targets, focus, motion, mobile. Then one HTML dossier.</p><code>design-scout audit build/index.html</code></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="evidence" aria-labelledby="evidence-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">02 / Evidence</span>
+        <h2 id="evidence-title">Principles with sources, not vibes</h2>
+        <p>Three of the fourteen principles this page was designed with. Each quote was fetched from the source and <span class="mark">matched word for word</span> by <code>design-scout note add</code>.</p>
+      </div>
+      <div class="quotes">
+        <figure>
+          <blockquote cite="https://www.nngroup.com/articles/top-ten-guidelines-for-homepage-usability/"><p>“Start the page with a tagline that summarizes what the site or company does, especially if you're new or less than famous.”</p></blockquote>
+          <figcaption><span class="principle">P1: the headline says what design-scout does.</span><a href="https://www.nngroup.com/articles/top-ten-guidelines-for-homepage-usability/">Jakob Nielsen, Top 10 Guidelines for Homepage Usability</a><span class="stamp">Verified · exact</span></figcaption>
+        </figure>
+        <figure>
+          <blockquote cite="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"><p>“The visual presentation of text and images of text has a contrast ratio of at least 4.5:1”</p></blockquote>
+          <figcaption><span class="principle">P8: every text pair is checked, including text near the shader.</span><a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html">W3C, Understanding SC 1.4.3</a><span class="stamp">Verified · exact</span></figcaption>
+        </figure>
+        <figure>
+          <blockquote cite="https://emilkowal.ski/ui/you-dont-need-animations"><p>“Before you start animating, ask yourself: what's the purpose of this animation?”</p></blockquote>
+          <figcaption><span class="principle">P10: one effect in a frame, one highlighter, nothing else moves.</span><a href="https://emilkowal.ski/ui/you-dont-need-animations">Emil Kowalski, You Don't Need Animations</a><span class="stamp">Verified · exact</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="references" aria-labelledby="references-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">03 / References</span>
+        <h2 id="references-title">Measured, not remembered</h2>
+        <p>Your agent <span class="mark">never describes a reference from memory</span>. These are the six sites studied for this page, as <code>design-scout capture</code> measured them in a real browser.</p>
+      </div>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Measured references table, scrolls horizontally">
+        <table>
+          <caption><span class="fig">FIG. 2</span> Computed styles weighted by on-screen text, measured 6 Oct 2026.</caption>
+          <thead><tr><th scope="col">Site</th><th scope="col">Main fonts</th><th scope="col">Body</th><th scope="col">Type ratio</th><th scope="col">Accent</th><th scope="col">Theme</th><th scope="col">Detected</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">impeccable.style</th><td>Albert Sans, JetBrains Mono</td><td class="num">15px</td><td class="num">1.44</td><td><span class="swatch"><i style="background:#0fb6ac"></i>#0fb6ac</span></td><td>light</td><td>Astro, scroll-driven CSS</td></tr>
+            <tr><th scope="row">linear.app</th><td>Inter Variable, Berkeley Mono</td><td class="num">15px</td><td class="num">1.333</td><td><span class="swatch"><i style="background:#5e6ad2"></i>#5e6ad2</span></td><td>dark</td><td>Next.js, View Transitions</td></tr>
+            <tr><th scope="row">paper.design</th><td>Matter, Paper Mono</td><td class="num">18px</td><td class="num">1.886</td><td>none</td><td>light</td><td>Next.js, Paper Shaders</td></tr>
+            <tr><th scope="row">posthog.com</th><td>RoundHog, Source Code Pro</td><td class="num">18px</td><td class="num">1.184</td><td><span class="swatch"><i style="background:#cd8407"></i>#cd8407</span></td><td>light</td><td>Gatsby, Radix UI</td></tr>
+            <tr><th scope="row">press.stripe.com</th><td>Ivar Text, Ivar Headline</td><td class="num">14px</td><td class="num">1.121</td><td><span class="swatch"><i style="background:#dbc895"></i>#dbc895</span></td><td>dark</td><td>three.js</td></tr>
+            <tr><th scope="row">resend.com</th><td>Inter, commitMono</td><td class="num">14px</td><td class="num">1.25</td><td><span class="swatch"><i style="background:#3b9eff"></i>#3b9eff</span></td><td>dark</td><td>Next.js, three.js</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="effects" aria-labelledby="effects-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">04 / Effects</span>
+        <h2 id="effects-title">Modern effects, with manners</h2>
+        <p>A catalog of 28 entries with snippets checked against each library's docs. The agent picks one signature effect that expresses the brand, not one of everything.</p>
+      </div>
+      <div class="two-col">
+        <dl class="catalog">
+          <div><dt>Paper Shaders</dt><dd>Mesh Gradient, Grain Gradient, Dithering, God Rays, Liquid Metal, Fluted Glass and the rest of the set</dd></div>
+          <div><dt>WebGL scenes</dt><dd>Unicorn Studio, ShaderGradient, Spline, three.js and React Three Fiber, OGL, COBE globe</dd></div>
+          <div><dt>Component collections</dt><dd>React Bits, Magic UI, Aceternity UI, Motion Primitives</dd></div>
+          <div><dt>Motion</dt><dd>Motion, GSAP with ScrollTrigger and SplitText, Lenis, Rive, dotLottie, NumberFlow, AutoAnimate, Vaul and Sonner</dd></div>
+          <div><dt>Web platform</dt><dd>View Transitions, scroll-driven animations, OKLCH, color-mix, @property, @starting-style</dd></div>
+        </dl>
+        <ol class="rules">
+          <li><div><strong>One signature, two helpers at most</strong><p>Several WebGL canvases fighting for one viewport is the fastest way to look like a template.</p></div></li>
+          <li><div><strong>Reduced motion is a real path</strong><p>Shaders drop to speed 0, smooth scroll stays off, parallax goes static. The audit compares both modes.</p></div></li>
+          <li><div><strong>Contrast is measured on pixels</strong><p>Text is hidden, the page is photographed, and the background under every line is sampled, so text over a shader is checked too.</p></div></li>
+          <li><div><strong>Versions are pinned</strong><p>Paper Shaders ships breaking changes under 0.0.x. Every entry records the version that was checked.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="audit" aria-labelledby="audit-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">05 / Audit</span>
+        <h2 id="audit-title">It does not stop at “looks fine”</h2>
+        <p>The audit runs the page in Chromium on desktop and mobile and in reduced-motion mode. The agent fixes findings and <span class="mark">re-runs it until the score passes</span>.</p>
+      </div>
+      <div class="readout">
+        <div><div class="score">0<small>/100</small></div><p>Test page with planted problems: 12 error types found, from pixel contrast to a 1200px element on a phone.</p></div>
+        <div><div class="score">100<small>/100</small></div><p>The fixed test page, including a live shader that stops under reduced motion.</p></div>
+        <div><div class="score" id="self-score">100<small>/100</small></div><p>This page, audited with the same command before you saw it.</p></div>
+      </div>
+      <ul class="checks">
+        <li>Text contrast on real pixels, desktop and mobile</li>
+        <li>Touch targets under 24 by 24 px (WCAG 2.5.8)</li>
+        <li>Keyboard focus visible and not hidden by sticky headers</li>
+        <li>Motion with prefers-reduced-motion: reduce</li>
+        <li>Horizontal overflow at 390 px</li>
+        <li>Links, buttons and fields without names or labels</li>
+        <li>Line length, line height, centered paragraphs</li>
+        <li>Font families, type-scale drift, spacing grid</li>
+        <li>Console errors, layout shift, page weight</li>
+        <li>Heading order, image alt, lorem ipsum, zoom blocking</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="install" aria-labelledby="install-title">
+    <div class="wrap install-grid">
+      <div>
+        <div class="section-head" style="margin-bottom: 0">
+          <span class="label">06 / Install</span>
+          <h2 id="install-title">Add it to your agent</h2>
+        </div>
+        <ul class="agents" aria-label="Where the skill is installed">
+          <li><span>Claude Code</span><code>~/.claude/skills</code></li>
+          <li><span>Codex</span><code>~/.agents/skills</code></li>
+          <li><span>Cursor</span><code>reads both</code></li>
+        </ul>
+      </div>
+      <div>
+        <div class="terminal">
+          <div class="terminal-bar"><span>From a local checkout</span><button class="copy-btn" type="button" data-copy="install-full" hidden>Copy commands</button></div>
+<pre id="install-full"><code><span class="prompt">$ </span>git clone https://github.com/masluny/design-scout
+<span class="prompt">$ </span>cd design-scout
+<span class="prompt">$ </span>pip install -e ".[capture]"
+<span class="prompt">$ </span>python -m playwright install chromium
+<span class="prompt">$ </span>design-scout install-skill
+<span class="prompt">$ </span>design-scout doctor</code></pre>
+        </div>
+        <p class="placeholder-note">Source, issues and the full workflow: <a href="https://github.com/masluny/design-scout">github.com/masluny/design-scout</a>.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Designed with design-scout: 14 verified principles, 6 measured references, 1 effect.</p>
+    <p><a href="https://github.com/masluny/design-scout/tree/main/examples/landing">How this page was designed</a> · MIT license</p>
+  </div>
+</footer>
+
+<script>
+  // Copy buttons: only shown when the Clipboard API exists, so the page never shows a dead control.
+  if (navigator.clipboard) {
+    for (const btn of document.querySelectorAll('[data-copy]')) {
+      btn.hidden = false
+      btn.addEventListener('click', async () => {
+        const text = [...document.getElementById(btn.dataset.copy).textContent.split('\n')]
+          .map((l) => l.replace(/^\$ /, '')).join('\n')
+        try {
+          await navigator.clipboard.writeText(text)
+          btn.textContent = 'Copied'
+        } catch {
+          btn.textContent = 'Copy failed'
+        }
+        setTimeout(() => { btn.textContent = 'Copy commands' }, 1800)
+      })
+    }
+  }
+</script>
+<script type="module">
+  // Signature effect: Paper Shaders Grain Gradient (pinned 0.0.81), mounted after the text has painted.
+  const mount = async () => {
+    const el = document.getElementById('specimen')
+    if (!el) return
+    try {
+      const { ShaderMount, grainGradientFragmentShader, GrainGradientShapes, getShaderColorFromString,
+              getShaderNoiseTexture, ShaderFitOptions } =
+        await import('https://cdn.jsdelivr.net/npm/@paper-design/shaders@0.0.81/+esm')
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)')
+      const noise = getShaderNoiseTexture()
+      await noise.decode()  // vanilla ShaderMount needs the noise image fully loaded
+      const colors = ['#e9a46c', '#c4472a', '#2f4a3f', '#f3dfb0'].map(getShaderColorFromString)
+      const shader = new ShaderMount(el, grainGradientFragmentShader, {
+        u_colorBack: getShaderColorFromString('#ede3d1'),
+        u_colors: colors, u_colorsCount: colors.length,
+        u_softness: 0.5, u_intensity: 0.5, u_noise: 0.35,
+        u_shape: GrainGradientShapes.sphere,
+        u_noiseTexture: noise,
+        u_fit: ShaderFitOptions.none, u_scale: 0.92, u_rotation: 0,
+        u_originX: 0.5, u_originY: 0.5, u_offsetX: 0, u_offsetY: 0,
+        u_worldWidth: 0, u_worldHeight: 0,
+      }, undefined, reduce.matches ? 0 : 0.35)
+      reduce.addEventListener('change', (e) => shader.setSpeed(e.matches ? 0 : 0.35))
+    } catch (err) {
+      console.warn('specimen shader unavailable, keeping the static gradient', err)
+    }
+  }
+  if (document.readyState === 'complete') mount()
+  else addEventListener('load', mount, { once: true })
+</script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+# Where to find professional reference sites.
+#
+# [[gallery]]  curated showcases; browse them, then `design-scout capture` the sites you pick.
+# [[exemplar]] individual sites widely cited for design quality, grouped by page type.
+#              They are starting points, not a fixed list: always add the direct competitors
+#              and 1-2 references from outside the category.
+#
+# login = true means the gallery needs an account (the agent should tell the user, not sign in).
+
+[[gallery]]
+key = "recent"
+name = "Recent (formerly Godly)"
+url = "https://recent.design/"
+types = ["landing", "saas", "portfolio", "ecommerce"]
+note = "Godly now redirects here (checked 2026-10-06). Curated web, motion, 3D and editorial work; items link to the work rather than listing URLs."
+login = false
+
+[[gallery]]
+key = "awwwards"
+name = "Awwwards (Sites of the Day)"
+url = "https://www.awwwards.com/websites/"
+types = ["portfolio", "landing", "ecommerce", "editorial"]
+note = "Juried awards. Great for ambitious effects; check usability before copying patterns."
+login = false
+
+[[gallery]]
+key = "land-book"
+name = "Land-book"
+url = "https://land-book.com/"
+types = ["landing", "saas", "portfolio", "ecommerce"]
+note = "Large, filterable landing-page gallery (by industry, style, color)."
+login = false
+
+[[gallery]]
+key = "lapa-ninja"
+name = "Lapa Ninja"
+url = "https://www.lapa.ninja/"
+types = ["landing", "saas"]
+note = "Landing pages by category; good for section-by-section pattern comparison."
+login = false
+
+[[gallery]]
+key = "saaspo"
+name = "Saaspo"
+url = "https://saaspo.com/"
+types = ["saas", "landing"]
+note = "SaaS marketing sites, filterable by section type (hero, pricing, features...)."
+login = false
+
+[[gallery]]
+key = "siteinspire"
+name = "SiteInspire"
+url = "https://www.siteinspire.com/"
+types = ["editorial", "portfolio", "ecommerce", "landing"]
+note = "Long-running curated showcase; strong on typography and editorial layouts."
+login = false
+
+[[gallery]]
+key = "minimal-gallery"
+name = "Minimal Gallery"
+url = "https://minimal.gallery/"
+types = ["portfolio", "editorial", "landing"]
+note = "Restrained, typographic sites."
+login = false
+
+[[gallery]]
+key = "one-page-love"
+name = "One Page Love"
+url = "https://onepagelove.com/"
+types = ["landing", "portfolio"]
+note = "Single-page sites and templates."
+login = false
+
+[[gallery]]
+key = "httpster"
+name = "Httpster"
+url = "https://httpster.net/"
+types = ["portfolio", "landing", "editorial"]
+note = "Bold, experimental, type-led sites."
+login = false
+
+[[gallery]]
+key = "darkmodedesign"
+name = "Dark Mode Design"
+url = "https://www.darkmodedesign.com/"
+types = ["landing", "saas", "portfolio"]
+note = "Dark-themed references only."
+login = false
+
+[[gallery]]
+key = "navbar-gallery"
+name = "Navbar Gallery"
+url = "https://www.navbar.gallery/"
+types = ["*"]
+note = "Navigation bars and menus from real sites."
+login = false
+
+[[gallery]]
+key = "footer-design"
+name = "Footer.design"
+url = "https://www.footer.design/"
+types = ["*"]
+note = "Footers from real sites."
+login = false
+
+[[gallery]]
+key = "bentogrids"
+name = "Bento Grids"
+url = "https://bentogrids.com/"
+types = ["landing", "saas", "portfolio"]
+note = "Bento-style feature grids."
+login = false
+
+[[gallery]]
+key = "framer-gallery"
+name = "Framer Gallery"
+url = "https://www.framer.com/gallery/"
+types = ["landing", "portfolio", "saas"]
+note = "Sites built in Framer; very current motion and layout trends."
+login = false
+
+[[gallery]]
+key = "made-in-webflow"
+name = "Made in Webflow"
+url = "https://webflow.com/made-in-webflow"
+types = ["landing", "portfolio", "ecommerce"]
+note = "Webflow showcase; many GSAP-driven interactions."
+login = false
+
+[[gallery]]
+key = "mobbin"
+name = "Mobbin"
+url = "https://mobbin.com/"
+types = ["mobile-app", "app", "dashboard", "saas"]
+note = "Screens and full flows from shipped iOS, Android and web apps. Best source for app UI."
+login = true
+
+[[gallery]]
+key = "refero"
+name = "Refero"
+url = "https://refero.design/"
+types = ["app", "dashboard", "saas", "mobile-app"]
+note = "Searchable UI pattern library from real products."
+login = true
+
+[[gallery]]
+key = "page-flows"
+name = "Page Flows"
+url = "https://pageflows.com/"
+types = ["app", "mobile-app", "saas", "ecommerce"]
+note = "Recorded user flows (onboarding, checkout, upgrade)."
+login = true
+
+# ---------------------------------------------------------------- exemplars
+
+[[exemplar]]
+name = "Linear"
+url = "https://linear.app/"
+types = ["saas", "landing", "app"]
+known_for = "Dark, precise product marketing; restrained gradients; disciplined type and spacing."
+
+[[exemplar]]
+name = "Stripe"
+url = "https://stripe.com/"
+types = ["saas", "landing", "docs"]
+known_for = "Animated mesh gradient hero, dense but calm information design, excellent docs."
+
+[[exemplar]]
+name = "Vercel"
+url = "https://vercel.com/"
+types = ["saas", "landing", "docs"]
+known_for = "Monochrome system (Geist), grid lines, product screenshots as the hero."
+
+[[exemplar]]
+name = "Raycast"
+url = "https://www.raycast.com/"
+types = ["saas", "landing", "mobile-app"]
+known_for = "Dark glossy product UI, keyboard-first storytelling, 3D accents."
+
+[[exemplar]]
+name = "Resend"
+url = "https://resend.com/"
+types = ["saas", "landing"]
+known_for = "Minimal developer marketing, serif display type on dark, crisp code blocks."
+
+[[exemplar]]
+name = "Supabase"
+url = "https://supabase.com/"
+types = ["saas", "landing", "docs"]
+known_for = "Developer product marketing with a strong single-accent color system."
+
+[[exemplar]]
+name = "PostHog"
+url = "https://posthog.com/"
+types = ["saas", "landing", "docs"]
+known_for = "Playful, opinionated brand with an OS-like UI; proof that personality converts."
+
+[[exemplar]]
+name = "Framer"
+url = "https://www.framer.com/"
+types = ["saas", "landing", "portfolio"]
+known_for = "Motion-led marketing, large type, live product demos."
+
+[[exemplar]]
+name = "Mercury"
+url = "https://mercury.com/"
+types = ["saas", "landing", "app"]
+known_for = "Fintech that feels premium: soft gradients, calm palette, generous whitespace."
+
+[[exemplar]]
+name = "Ramp"
+url = "https://ramp.com/"
+types = ["saas", "landing"]
+known_for = "Bold color, quantified value proposition, product UI front and center."
+
+[[exemplar]]
+name = "Attio"
+url = "https://attio.com/"
+types = ["saas", "landing", "app"]
+known_for = "Clean light UI, crisp product shots, subtle motion."
+
+[[exemplar]]
+name = "Cursor"
+url = "https://cursor.com/"
+types = ["saas", "landing"]
+known_for = "Developer tool marketing built around the product in action."
+
+[[exemplar]]
+name = "Arc"
+url = "https://arc.net/"
+types = ["landing", "mobile-app", "saas"]
+known_for = "Warm, playful brand with rich color and illustration."
+
+[[exemplar]]
+name = "Things"
+url = "https://culturedcode.com/things/"
+types = ["mobile-app", "landing"]
+known_for = "Classic app marketing: device shots, calm color, meticulous detail."
+
+[[exemplar]]
+name = "Apple"
+url = "https://www.apple.com/"
+types = ["ecommerce", "landing", "mobile-app"]
+known_for = "Product storytelling with scroll-linked video and huge type."
+
+[[exemplar]]
+name = "Teenage Engineering"
+url = "https://teenage.engineering/"
+types = ["ecommerce", "portfolio"]
+known_for = "Industrial, grid-based product presentation with a distinctive voice."
+
+[[exemplar]]
+name = "Aesop"
+url = "https://www.aesop.com/"
+types = ["ecommerce", "editorial"]
+known_for = "Editorial luxury e-commerce: serif type, muted palette, slow pacing."
+
+[[exemplar]]
+name = "Nothing"
+url = "https://nothing.tech/"
+types = ["ecommerce", "landing"]
+known_for = "Dot-matrix typography and monochrome product focus."
+
+[[exemplar]]
+name = "Allbirds"
+url = "https://www.allbirds.com/"
+types = ["ecommerce"]
+known_for = "Friendly DTC e-commerce with clear product filtering."
+
+[[exemplar]]
+name = "The Pudding"
+url = "https://pudding.cool/"
+types = ["editorial", "dashboard"]
+known_for = "Visual essays; data storytelling with scrollytelling."
+
+[[exemplar]]
+name = "GOV.UK"
+url = "https://www.gov.uk/"
+types = ["docs", "app", "editorial"]
+known_for = "Ruthless clarity and accessibility; the benchmark for forms and content."
+
+[[exemplar]]
+name = "Rauno Freiberg"
+url = "https://rauno.me/"
+types = ["portfolio"]
+known_for = "Interaction-design craft portfolio; small details done perfectly."
+
+[[exemplar]]
+name = "Emil Kowalski"
+url = "https://emilkowal.ski/"
+types = ["portfolio", "editorial"]
+known_for = "Minimal personal site with high-quality motion."
+
+[[exemplar]]
+name = "Lusion"
+url = "https://lusion.co/"
+types = ["portfolio"]
+known_for = "WebGL studio; immersive 3D as the brand."
+
+[[exemplar]]
+name = "Locomotive"
+url = "https://locomotive.ca/"
+types = ["portfolio"]
+known_for = "Agency site famous for smooth-scroll and scroll-linked motion."
+
+[[exemplar]]
+name = "basement.studio"
+url = "https://basement.studio/"
+types = ["portfolio"]
+known_for = "Dark, technical, 3D-heavy studio site."
+
+[[exemplar]]
+name = "Anthropic"
+url = "https://www.anthropic.com/"
+types = ["landing", "editorial"]
+known_for = "Warm editorial palette and serif typography for an AI company."
+
+[[exemplar]]
+name = "Granola"
+url = "https://www.granola.ai/"
+types = ["landing", "mobile-app", "saas"]
+known_for = "Friendly, understated product marketing with an editorial touch."
+
+[[exemplar]]
+name = "ElevenLabs"
+url = "https://elevenlabs.io/"
+types = ["saas", "landing"]
+known_for = "Interactive product demos on the homepage; minimal monochrome UI."
+
+[[exemplar]]
+name = "Paper"
+url = "https://paper.design/"
+types = ["saas", "landing"]
+known_for = "Design tool marketing that uses its own Paper Shaders as the visual language."

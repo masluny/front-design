@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "design-scout"
+version = "0.1.0"
+description = "Research-first UI/UX design toolkit for AI coding agents: reads expert sources, captures professional sites, then designs with modern effects and audits the result."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = []
+keywords = ["ui", "ux", "design", "web-design", "ai-agents", "claude-code", "codex", "cursor", "accessibility", "design-tokens", "shaders"]
+
+[project.urls]
+Homepage = "https://github.com/masluny/design-scout"
+Issues = "https://github.com/masluny/design-scout/issues"
+
+[project.optional-dependencies]
+capture = ["playwright>=1.45", "pillow>=10"]
+
+[project.scripts]
+design-scout = "designscout.cli:main"
+
+[tool.setuptools]
+packages = ["designscout"]
+
+[tool.setuptools.package-data]
+designscout = ["data/*.toml", "skill/*.md", "*.js"]

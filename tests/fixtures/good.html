@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northwind Coffee: roasted this week</title>
+<meta name="description" content="Small-batch coffee roasted every Monday and shipped the same week, so it arrives at its best.">
+<style>
+  :root { --bg: #f6f1e9; --text: #1d1a16; --muted: #5b5248; --accent: #b4441c; --ink: #0b0b10; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 18px/1.6 Georgia, serif; }
+  header { padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+  header a { color: var(--text); padding: 12px 8px; }
+  .hero { position: relative; min-height: 70vh; display: grid; place-items: center; padding: 64px 24px; overflow: hidden; isolation: isolate; }
+  #hero-bg { position: absolute; inset: 0; z-index: -1; }
+  .hero-card { background: color-mix(in oklch, var(--bg) 88%, transparent); padding: 32px; border-radius: 16px; max-width: 40rem; }
+  h1 { font-size: clamp(2.2rem, 1.5rem + 3vw, 4rem); line-height: 1.05; margin: 0 0 16px; text-wrap: balance; }
+  p { max-width: 62ch; margin: 0 0 16px; }
+  .cta { display: inline-block; background: var(--accent); color: #fff; padding: 14px 22px; border-radius: 10px; text-decoration: none; font-family: system-ui, sans-serif; font-weight: 600; }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  main section { padding: 48px 24px; max-width: 72rem; margin: 0 auto; }
+  label { display: block; font-family: system-ui, sans-serif; margin-bottom: 8px; }
+  input { font: inherit; padding: 12px; border: 1px solid var(--muted); border-radius: 8px; width: min(100%, 24rem); }
+  button { font: 600 16px system-ui, sans-serif; padding: 12px 20px; min-height: 44px; border: 0; border-radius: 10px; background: var(--text); color: var(--bg); }
+  @media (prefers-reduced-motion: no-preference) {
+    .cta { transition: transform .2s ease-out; }
+    .cta:hover { transform: translateY(-2px); }
+  }
+</style>
+</head>
+<body>
+<header><strong>Northwind</strong><nav aria-label="Main"><a href="#shop">Shop</a> <a href="#about">About</a></nav></header>
+<main>
+  <div class="hero">
+    <div id="hero-bg" aria-hidden="true"></div>
+    <div class="hero-card">
+      <h1>Coffee roasted on Monday, in your cup by Friday</h1>
+      <p>Every bag is roasted to order in small batches and shipped the same week, so it arrives at its best.</p>
+      <a class="cta" href="#shop">Choose your roast</a>
+    </div>
+  </div>
+  <section id="shop">
+    <h2>This week's roasts</h2>
+    <p>Three single origins, each picked for a different morning: bright and fruity, round and chocolatey, or deep and smoky.</p>
+    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="" width="1" height="1">
+  </section>
+  <section id="about">
+    <h2>Get the roast schedule</h2>
+    <form>
+      <label for="email">Email address</label>
+      <input id="email" type="email" autocomplete="email">
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
+</main>
+<script type="module">
+  import { ShaderMount, meshGradientFragmentShader, getShaderColorFromString, ShaderFitOptions }
+    from 'https://cdn.jsdelivr.net/npm/@paper-design/shaders@0.0.81/+esm'
+
+  const colors = ['#f6f1e9', '#e8b88a', '#b4441c', '#2e4a3f'].map(getShaderColorFromString)
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+  new ShaderMount(
+    document.getElementById('hero-bg'),
+    meshGradientFragmentShader,
+    {
+      u_colors: colors, u_colorsCount: colors.length,
+      u_distortion: 0.8, u_swirl: 0.1, u_grainMixer: 0, u_grainOverlay: 0.15,
+      u_fit: ShaderFitOptions.none, u_scale: 1, u_rotation: 0,
+      u_originX: 0.5, u_originY: 0.5, u_offsetX: 0, u_offsetY: 0,
+      u_worldWidth: 0, u_worldHeight: 0,
+    },
+    undefined,
+    reduce ? 0 : 0.25
+  )
+</script>
+</body>
+</html>

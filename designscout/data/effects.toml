@@ -1,0 +1,943 @@
+# Catalog of modern visual effects and motion libraries.
+#
+# Every snippet was checked against the library's docs or published package on the date in
+# `checked`. Libraries move fast (Paper Shaders ships breaking changes under 0.0.x), so the
+# agent must pin the version it installs and re-check props on the docs page before use.
+#
+# category: background | hero | text | scroll | micro | 3d | data | transition | image-filter |
+#           logo | components | css
+# vibes:    calm, luxe, techy, playful, editorial, organic, retro, brutalist, bold, dramatic, warm
+# cost:     light (< ~15 kB, cheap to render) | medium | heavy (three.js-class bundle or full-screen GPU)
+# stacks:   react | vanilla | vue | any (plain HTML/CSS)
+#
+# Rules the agent must follow for every effect (repeated in SKILL.md):
+#   1. One signature effect per page, at most two supporting ones.
+#   2. prefers-reduced-motion: stop or remove motion (speed 0 / static frame / no smooth scroll).
+#   3. Decorative canvases get aria-hidden="true" and never carry content.
+#   4. Text over an effect must pass contrast against the effect's lightest/darkest frame
+#      (`design-scout audit` samples real pixels).
+#   5. Lazy-load below-the-fold effects; cap DPR; keep LCP an image or text, not a canvas.
+
+checked = "2026-10-06"
+
+[helpers]
+use_reduced_motion = '''
+// useReducedMotion: SSR-safe React hook (motion/react also exports one)
+import { useEffect, useState } from 'react'
+
+export function useReducedMotion() {
+  const [reduce, setReduce] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReduce(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+  return reduce
+}
+'''
+
+# ================================================================ Paper Shaders
+
+[[effect]]
+key = "paper-mesh-gradient"
+name = "Mesh Gradient"
+library = "Paper Shaders"
+url = "https://shaders.paper.design/mesh-gradient"
+package = "@paper-design/shaders-react"
+version = "0.0.81"
+license = "Apache-2.0 (commercial use OK, no visible attribution needed)"
+category = "background"
+stacks = ["react", "vanilla"]
+vibes = ["calm", "luxe", "organic", "techy", "warm"]
+cost = "light"
+use_when = "A soft, living brand backdrop for a hero or a full-bleed section; Stripe-like premium calm."
+avoid_when = "Behind long body text, or when the brand palette has fewer than 3 usable colors."
+a11y = "Wrap in aria-hidden. Use speed 0 for reduced motion (renders one static frame)."
+perf = "Zero-dependency WebGL on one canvas; pauses offscreen via IntersectionObserver. Pin the version."
+react = '''
+'use client' // Next.js App Router: shaders run on the client
+import { MeshGradient } from '@paper-design/shaders-react'
+import { useReducedMotion } from './useReducedMotion'
+
+export function HeroBackground() {
+  const reduce = useReducedMotion()
+  return (
+    <div aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: -1 }}>
+      <MeshGradient
+        colors={['#0b0b10', '#2b2bff', '#ff6a3d', '#f4efe6']} // up to 10 brand colors
+        distortion={0.8}   // 0..1 organic noise
+        swirl={0.1}        // 0..1 vortex
+        grainMixer={0}     // 0..1 grain on shape edges
+        grainOverlay={0.15} // 0..1 film grain
+        speed={reduce ? 0 : 0.25}
+        style={{ width: '100%', height: '100%' }}
+      />
+    </div>
+  )
+}
+'''
+vanilla = '''
+<div id="hero-bg" aria-hidden="true" style="position:absolute;inset:0;z-index:-1"></div>
+<script type="module">
+  import { ShaderMount, meshGradientFragmentShader, getShaderColorFromString, ShaderFitOptions }
+    from 'https://cdn.jsdelivr.net/npm/@paper-design/shaders@0.0.81/+esm'
+
+  const colors = ['#0b0b10', '#2b2bff', '#ff6a3d', '#f4efe6'].map(getShaderColorFromString)
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+  new ShaderMount(
+    document.getElementById('hero-bg'),
+    meshGradientFragmentShader,
+    {
+      u_colors: colors, u_colorsCount: colors.length,
+      u_distortion: 0.8, u_swirl: 0.1, u_grainMixer: 0, u_grainOverlay: 0.15,
+      // sizing uniforms (pattern defaults)
+      u_fit: ShaderFitOptions.none, u_scale: 1, u_rotation: 0,
+      u_originX: 0.5, u_originY: 0.5, u_offsetX: 0, u_offsetY: 0,
+      u_worldWidth: 0, u_worldHeight: 0,
+    },
+    undefined,            // WebGL context attributes
+    reduce ? 0 : 0.25     // speed
+  )
+</script>
+'''
+
+[[effect]]
+key = "paper-grain-gradient"
+name = "Grain Gradient"
+library = "Paper Shaders"
+url = "https://shaders.paper.design/grain-gradient"
+package = "@paper-design/shaders-react"
+version = "0.0.81"
+license = "Apache-2.0"
+category = "background"
+stacks = ["react", "vanilla"]
+vibes = ["organic", "editorial", "retro", "warm", "calm"]
+cost = "light"
+use_when = "Tactile, print-like color fields: editorial brands, wellness, creative studios."
+avoid_when = "Data-dense product UIs; grain fights small text."
+a11y = "aria-hidden wrapper; speed 0 when reduced motion is requested."
+perf = "Single canvas; set maxPixelCount on very large screens. Shape 'blob' can render empty at scale 1; 'sphere', 'corners' and 'wave' are reliable."
+vanilla = '''
+<div id="specimen" aria-hidden="true" style="position:relative;aspect-ratio:4/5"></div>
+<script type="module">
+  import { ShaderMount, grainGradientFragmentShader, GrainGradientShapes, getShaderColorFromString,
+           getShaderNoiseTexture, ShaderFitOptions } from 'https://cdn.jsdelivr.net/npm/@paper-design/shaders@0.0.81/+esm'
+
+  const noise = getShaderNoiseTexture()
+  await noise.decode()  // REQUIRED in vanilla: ShaderMount throws if the noise image is not loaded yet
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)')
+  const colors = ['#e9a46c', '#c4472a', '#2f4a3f', '#f3dfb0'].map(getShaderColorFromString)
+  const shader = new ShaderMount(document.getElementById('specimen'), grainGradientFragmentShader, {
+    u_colorBack: getShaderColorFromString('#ede3d1'),
+    u_colors: colors, u_colorsCount: colors.length,
+    u_softness: 0.5, u_intensity: 0.5, u_noise: 0.35,
+    u_shape: GrainGradientShapes.sphere,  // wave | dots | truchet | corners | ripple | blob | sphere
+    u_noiseTexture: noise,
+    u_fit: ShaderFitOptions.none, u_scale: 0.92, u_rotation: 0,
+    u_originX: 0.5, u_originY: 0.5, u_offsetX: 0, u_offsetY: 0, u_worldWidth: 0, u_worldHeight: 0,
+  }, undefined, reduce.matches ? 0 : 0.35)
+  reduce.addEventListener('change', (e) => shader.setSpeed(e.matches ? 0 : 0.35))
+</script>
+'''
+react = '''
+import { GrainGradient } from '@paper-design/shaders-react'
+
+<GrainGradient
+  colors={['#e8d5b7', '#d9603b', '#2e4a3f']} // up to 7 colors
+  colorBack="#f6f1e9"
+  softness={0.5}   // 0..1 edge softness
+  intensity={0.5}  // 0..1 distortion
+  noise={0.25}     // 0..1 grain
+  shape="corners"  // wave | dots | truchet | corners | ripple | blob | sphere
+  speed={reduce ? 0 : 0.6}
+  style={{ width: '100%', height: '100%' }}
+/>
+'''
+
+[[effect]]
+key = "paper-dithering"
+name = "Dithering"
+library = "Paper Shaders"
+url = "https://shaders.paper.design/dithering"
+package = "@paper-design/shaders-react"
+version = "0.0.81"
+license = "Apache-2.0"
+category = "hero"
+stacks = ["react", "vanilla"]
+vibes = ["retro", "techy", "brutalist", "bold"]
+cost = "light"
+use_when = "1-bit / pixel aesthetic: dev tools, hardware, music, anything that wants a crafted lo-fi signature."
+avoid_when = "Luxury or soft brands; behind text at small sizes."
+a11y = "aria-hidden; pause with speed 0. Avoid high-frequency flicker (WCAG 2.3.1 three flashes)."
+perf = "Cheap; size controls pixel size (1..20)."
+react = '''
+import { Dithering } from '@paper-design/shaders-react'
+
+<Dithering
+  colorBack="#000000"
+  colorFront="#00b3ff"
+  shape="sphere" // simplex | warp | dots | wave | ripple | swirl | sphere
+  type="4x4"     // random | 2x2 | 4x4 | 8x8
+  size={2}       // 1..20 pixel size
+  scale={0.6}
+  speed={reduce ? 0 : 1}
+  style={{ width: '100%', height: '100%' }}
+/>
+'''
+
+[[effect]]
+key = "paper-god-rays"
+name = "God Rays"
+library = "Paper Shaders"
+url = "https://shaders.paper.design/god-rays"
+package = "@paper-design/shaders-react"
+version = "0.0.81"
+license = "Apache-2.0"
+category = "hero"
+stacks = ["react", "vanilla"]
+vibes = ["dramatic", "luxe", "techy"]
+cost = "light"
+use_when = "A launch moment: light beams behind a product shot or headline on a dark page."
+avoid_when = "Light themes; pages where the hero must stay quiet."
+a11y = "aria-hidden; reduced motion: speed 0. Check headline contrast against the brightest ray."
+perf = "Single full-bleed canvas; keep it to the hero."
+react = '''
+import { GodRays } from '@paper-design/shaders-react'
+
+<GodRays
+  colors={['#cc3333', '#cc9933', '#99cc33', '#33cc33']} // up to 5
+  colorBack="#000000"
+  colorBloom="#0000ff"
+  bloom={0.4} intensity={0.8} density={0.3}
+  spotty={0.3} midSize={0.2} midIntensity={0.4}
+  offsetY={-0.55}
+  speed={reduce ? 0 : 0.75}
+  style={{ width: '100%', height: '100%' }}
+/>
+'''
+
+[[effect]]
+key = "paper-liquid-metal"
+name = "Liquid Metal (logo)"
+library = "Paper Shaders"
+url = "https://shaders.paper.design/liquid-metal"
+package = "@paper-design/shaders-react"
+version = "0.0.81"
+license = "Apache-2.0"
+category = "logo"
+stacks = ["react", "vanilla"]
+vibes = ["luxe", "techy", "bold", "dramatic"]
+cost = "light"
+use_when = "Turn a logo mark (SVG/PNG with transparent background) into a chrome, liquid hero object."
+avoid_when = "Wordmarks with thin strokes; brands that should feel humble."
+a11y = "Keep the real logo/brand name in text for screen readers; shader is decorative."
+perf = "Image is uploaded as a texture once; cheap afterwards."
+react = '''
+import { LiquidMetal } from '@paper-design/shaders-react'
+
+<LiquidMetal
+  image="/logo-mark.svg" // URL or HTMLImageElement, transparent background required
+  colorBack="#aaaaac"
+  colorTint="#ffffff"
+  shape="diamond"   // none | circle | daisy | diamond | metaballs
+  repetition={2} softness={0.1}
+  shiftRed={0.3} shiftBlue={0.3}
+  distortion={0.07} contour={0.4} angle={70}
+  scale={0.6} fit="contain"
+  speed={reduce ? 0 : 1}
+  style={{ width: 480, height: 480 }}
+/>
+'''
+
+[[effect]]
+key = "paper-fluted-glass"
+name = "Fluted Glass (image filter)"
+library = "Paper Shaders"
+url = "https://shaders.paper.design/fluted-glass"
+package = "@paper-design/shaders-react"
+version = "0.0.81"
+license = "Apache-2.0"
+category = "image-filter"
+stacks = ["react", "vanilla"]
+vibes = ["luxe", "editorial", "calm"]
+cost = "light"
+use_when = "Architectural/ribbed-glass treatment over a photo: hospitality, fashion, interiors."
+avoid_when = "When the photo itself must be read (product detail, faces)."
+a11y = "The underlying image still needs alt text on a real <img> or in visually hidden text."
+perf = "Static unless animated; one texture upload."
+react = '''
+import { FlutedGlass } from '@paper-design/shaders-react'
+
+<FlutedGlass
+  image="/hero.webp"
+  colorBack="#00000000" colorShadow="#000000" colorHighlight="#ffffff"
+  size={0.5} shadows={0.25} highlights={0.1}
+  shape="lines"            // pattern | wave | lines | linesIrregular | zigzag
+  distortionShape="prism"  // prism | lens | contour | cascade | flat
+  distortion={0.5} angle={0} edges={0.25}
+  fit="cover"
+  style={{ width: '100%', height: '100%' }}
+/>
+'''
+
+[[effect]]
+key = "paper-more"
+name = "Other Paper Shaders"
+library = "Paper Shaders"
+url = "https://shaders.paper.design/"
+package = "@paper-design/shaders-react"
+version = "0.0.81"
+license = "Apache-2.0"
+category = "background"
+stacks = ["react", "vanilla"]
+vibes = ["calm", "techy", "playful", "organic", "retro", "editorial", "luxe"]
+cost = "light"
+use_when = """Pick from the rest of the set (open https://shaders.paper.design/<kebab-name> for live props):
+effects: StaticMeshGradient, StaticRadialGradient (static = zero motion, great reduced-motion fallback),
+DotOrbit, DotGrid, Warp, Spiral, Swirl, Waves, NeuroNoise, PerlinNoise, SimplexNoise, Voronoi,
+PulsingBorder (glowing border for a CTA/card), Metaballs, ColorPanels, SmokeRing;
+image filters: PaperTexture, Water, ImageDithering, HalftoneDots, HalftoneCmyk;
+logo: Heatmap, GemSmoke."""
+avoid_when = "Using more than one Paper shader in the same viewport."
+a11y = "Same rules as the other Paper shaders."
+perf = "Each shader is its own WebGL context; browsers cap contexts (about 16), so reuse sparingly."
+react = '''
+import { PulsingBorder, StaticMeshGradient } from '@paper-design/shaders-react'
+// Fetch the component page for exact props before use:
+//   https://shaders.paper.design/pulsing-border
+//   https://shaders.paper.design/static-mesh-gradient
+'''
+
+# ================================================================ no-code / 3D scenes
+
+[[effect]]
+key = "unicorn-studio"
+name = "Unicorn Studio scene"
+library = "Unicorn Studio"
+url = "https://www.unicorn.studio/docs/embed"
+package = "unicornstudio-react"
+version = "2.2.13 (react) / unicornstudio.js 2.3.0 (CDN)"
+license = "Proprietary SaaS (free tier with badge, paid to remove)"
+category = "hero"
+stacks = ["react", "vanilla"]
+vibes = ["dramatic", "techy", "luxe", "playful", "bold"]
+cost = "medium"
+use_when = "Rich WebGL hero (liquid, light, particles, interactive cursor effects) designed visually in the Unicorn editor, then embedded."
+avoid_when = "You cannot create the scene in the editor (needs the user's account) or the page must be fully self-hosted/open-source."
+a11y = "aria-hidden container; provide a static poster for reduced motion."
+perf = "~38 kB gz runtime plus scene. Use data-us-lazyload, data-us-production, lower scale/dpi/fps first."
+react = '''
+import UnicornScene from 'unicornstudio-react' // 'unicornstudio-react/next' for Next.js
+
+<UnicornScene projectId="YOUR_PROJECT_EMBED_ID" />
+'''
+vanilla = '''
+<div class="unicorn-embed" data-us-project="YOUR_PROJECT_EMBED_ID"
+     data-us-scale="1" data-us-dpi="1.5" data-us-lazyload="true" data-us-production="true"
+     style="width:100%;height:100vh" aria-hidden="true"></div>
+<script src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.3.0/dist/unicornStudio.umd.js"></script>
+<script>UnicornStudio.init()</script>
+'''
+
+[[effect]]
+key = "shadergradient"
+name = "ShaderGradient"
+library = "ShaderGradient"
+url = "https://www.shadergradient.co/"
+package = "@shadergradient/react"
+version = "2.4.20"
+license = "MIT"
+category = "background"
+stacks = ["react"]
+vibes = ["calm", "luxe", "playful", "techy"]
+cost = "heavy"
+use_when = "3D-feeling animated gradient (plane, sphere, water) designed in the shadergradient.co editor."
+avoid_when = "Bundle budget is tight: it pulls three.js and react-three-fiber. Prefer paper-mesh-gradient for 2D looks."
+a11y = "aria-hidden; set animate='off' for reduced motion."
+perf = "three.js + R3F bundle; set pixelDensity <= 1.5 and lazy-load."
+react = '''
+// npm i @shadergradient/react @react-three/fiber three three-stdlib camera-controls
+import { ShaderGradientCanvas, ShaderGradient } from '@shadergradient/react'
+
+<ShaderGradientCanvas style={{ position: 'absolute', inset: 0 }} pixelDensity={1.5} fov={45}>
+  <ShaderGradient
+    control="query"
+    urlString="PASTE_THE_URL_FROM_shadergradient.co/customize"
+  />
+</ShaderGradientCanvas>
+'''
+
+[[effect]]
+key = "spline"
+name = "Spline 3D scene"
+library = "Spline"
+url = "https://spline.design/"
+package = "@splinetool/react-spline"
+version = "4.1.0"
+license = "Proprietary editor; runtime free to embed"
+category = "3d"
+stacks = ["react", "vanilla"]
+vibes = ["playful", "techy", "bold"]
+cost = "heavy"
+use_when = "Interactive 3D object or scene designed in Spline (product, mascot, abstract shapes)."
+avoid_when = "Mobile-first pages with strict LCP budgets; content that must render without JS."
+a11y = "Decorative: aria-hidden; give a static image fallback for reduced motion and small screens."
+perf = "Runtime and .splinecode are large; lazy-load, show a poster image until loaded."
+react = '''
+import Spline from '@splinetool/react-spline'
+
+<Spline scene="https://prod.spline.design/YOUR_SCENE_ID/scene.splinecode" />
+'''
+vanilla = '''
+<script type="module" src="https://unpkg.com/@splinetool/viewer/build/spline-viewer.js"></script>
+<spline-viewer url="https://prod.spline.design/YOUR_SCENE_ID/scene.splinecode" loading-anim-type="none"></spline-viewer>
+'''
+
+[[effect]]
+key = "r3f"
+name = "three.js / React Three Fiber"
+library = "three.js + @react-three/fiber + drei"
+url = "https://r3f.docs.pmnd.rs/"
+package = "@react-three/fiber"
+version = "9.8.1 (three 0.186.1)"
+license = "MIT"
+category = "3d"
+stacks = ["react", "vanilla"]
+vibes = ["techy", "dramatic", "playful"]
+cost = "heavy"
+use_when = "Custom 3D you code yourself: product configurators, particle fields, bespoke shaders."
+avoid_when = "A 2D gradient or a pre-made scene would do (use Paper Shaders / Unicorn / Spline)."
+a11y = "Decorative canvases aria-hidden; interactive 3D needs keyboard alternatives."
+perf = "Use frameloop='demand' for mostly-static scenes, dpr={[1, 1.5]}, and drei's <PerformanceMonitor>."
+react = '''
+import { Canvas } from '@react-three/fiber'
+import { Float, Environment } from '@react-three/drei'
+
+<Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 4] }} aria-hidden="true">
+  <Float speed={reduce ? 0 : 1.5} rotationIntensity={0.6}>
+    <mesh>
+      <torusKnotGeometry args={[0.8, 0.28, 220, 32]} />
+      <meshStandardMaterial metalness={0.9} roughness={0.15} />
+    </mesh>
+  </Float>
+  <Environment preset="city" />
+</Canvas>
+'''
+
+[[effect]]
+key = "ogl"
+name = "OGL"
+library = "OGL"
+url = "https://github.com/oframe/ogl"
+package = "ogl"
+version = "1.0.11"
+license = "Unlicense"
+category = "background"
+stacks = ["vanilla", "react"]
+vibes = ["techy", "organic", "calm"]
+cost = "medium"
+use_when = "Hand-written fragment shaders with a tiny WebGL wrapper (many React Bits backgrounds use it)."
+avoid_when = "You do not need custom GLSL."
+a11y = "aria-hidden canvas; stop the RAF loop under reduced motion."
+perf = "Small (about 8 to 30 kB depending on imports)."
+vanilla = '''
+import { Renderer, Program, Mesh, Triangle } from 'ogl'
+
+const renderer = new Renderer({ dpr: Math.min(devicePixelRatio, 1.5) })
+const gl = renderer.gl
+document.querySelector('#bg').appendChild(gl.canvas)
+const program = new Program(gl, {
+  vertex: `attribute vec2 position; void main(){ gl_Position = vec4(position, 0., 1.); }`,
+  fragment: `precision highp float; uniform float uTime; uniform vec2 uRes;
+    void main(){ vec2 uv = gl_FragCoord.xy / uRes; gl_FragColor = vec4(uv, .5 + .5*sin(uTime), 1.); }`,
+  uniforms: { uTime: { value: 0 }, uRes: { value: [innerWidth, innerHeight] } },
+})
+const mesh = new Mesh(gl, { geometry: new Triangle(gl), program })
+renderer.setSize(innerWidth, innerHeight)
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+requestAnimationFrame(function loop(t) {
+  program.uniforms.uTime.value = t * 0.001
+  renderer.render({ scene: mesh })
+  if (!reduce) requestAnimationFrame(loop)
+})
+'''
+
+[[effect]]
+key = "cobe"
+name = "COBE globe"
+library = "COBE"
+url = "https://cobe.vercel.app/"
+package = "cobe"
+version = "2.0.1"
+license = "MIT"
+category = "data"
+stacks = ["vanilla", "react"]
+vibes = ["techy", "calm"]
+cost = "light"
+use_when = "A small dotted 3D globe with markers and arcs: global presence, edge networks, community maps."
+avoid_when = "You need real geography or interaction beyond rotation."
+a11y = "aria-hidden canvas plus a text list of the locations it represents."
+perf = "About 5 kB, single canvas."
+vanilla = '''
+import createGlobe from 'cobe'
+
+let phi = 0
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+const globe = createGlobe(document.getElementById('globe'), {
+  devicePixelRatio: 2, width: 1000, height: 1000,
+  phi: 0, theta: 0.25, dark: 1, diffuse: 1.2,
+  mapSamples: 16000, mapBrightness: 6,
+  baseColor: [0.3, 0.3, 0.3], markerColor: [1, 0.5, 0.3], glowColor: [1, 1, 1],
+  markers: [{ location: [52.2297, 21.0122], size: 0.06 }],
+  onRender: (state) => { state.phi = phi; if (!reduce) phi += 0.005 },
+})
+// <canvas id="globe" width="1000" height="1000" style="width:500px;height:500px" aria-hidden="true">
+'''
+
+# ================================================================ component collections
+
+[[effect]]
+key = "react-bits"
+name = "React Bits"
+library = "React Bits"
+url = "https://reactbits.dev/"
+package = "shadcn registry @react-bits"
+version = "registry (copy-in source)"
+license = "MIT + Commons Clause (free for personal and commercial use; no reselling the components)"
+category = "components"
+stacks = ["react"]
+vibes = ["playful", "techy", "bold", "dramatic", "calm"]
+cost = "medium"
+use_when = """Copy-in animated components. Backgrounds: Aurora, Silk, Iridescence, Galaxy, Threads, Beams,
+LiquidChrome and more; text animations: BlurText, SplitText, ShinyText and more. Each comes in
+JS-CSS, JS-TW, TS-CSS and TS-TW variants."""
+avoid_when = "More than one React Bits background per page; it reads as a template."
+a11y = "Source is copied into your repo: add the reduced-motion guard yourself."
+perf = "Backgrounds use OGL/three; check the component's imports."
+react = '''
+# pick the variant matching the project (TS + Tailwind shown)
+npx shadcn@latest add @react-bits/BlurText-TS-TW
+# open the component page on reactbits.dev for its exact name and props
+'''
+
+[[effect]]
+key = "magic-ui"
+name = "Magic UI"
+library = "Magic UI"
+url = "https://magicui.design/"
+package = "shadcn registry"
+version = "registry (copy-in source)"
+license = "MIT"
+category = "components"
+stacks = ["react"]
+vibes = ["techy", "playful", "calm"]
+cost = "light"
+use_when = """Polished SaaS landing details on top of shadcn/ui + Tailwind + Motion: Marquee (logo walls),
+Number Ticker, Border Beam, Animated Beam (integration diagrams), Bento Grid, Dock, Globe, Particles,
+Retro Grid, Shimmer Button."""
+avoid_when = "The page already has a strong signature effect; these are seasoning."
+a11y = "Marquee: pause on hover and under reduced motion; never put essential content only in a marquee."
+perf = "Mostly CSS + Motion; cheap."
+react = '''
+# namespaced shadcn registry; component names are on magicui.design, e.g. Marquee:
+npx shadcn@latest add @magicui/marquee
+'''
+
+[[effect]]
+key = "aceternity-ui"
+name = "Aceternity UI"
+library = "Aceternity UI"
+url = "https://ui.aceternity.com/components"
+package = "shadcn registry"
+version = "registry (copy-in source)"
+license = "Free components plus paid Pro; check the license page before shipping"
+category = "components"
+stacks = ["react"]
+vibes = ["dramatic", "techy", "bold"]
+cost = "medium"
+use_when = "Bold hero effects for Next.js + Tailwind: Spotlight, Background Beams, Aurora Background, Lamp, Sparkles, 3D Card, Hero Highlight."
+avoid_when = "Calm or editorial brands; these effects are recognizable and can look templated."
+a11y = "Add reduced-motion guards; check contrast over the effect."
+perf = "Varies; some use canvas particles."
+react = '''
+# each component page lists its shadcn command; copy it exactly, for example:
+npx shadcn@latest add @aceternity/spotlight
+'''
+
+[[effect]]
+key = "motion-primitives"
+name = "Motion Primitives"
+library = "Motion Primitives"
+url = "https://motion-primitives.com/"
+package = "shadcn registry"
+version = "registry (copy-in source)"
+license = "MIT"
+category = "components"
+stacks = ["react"]
+vibes = ["calm", "playful", "editorial"]
+cost = "light"
+use_when = "Tasteful Motion-based building blocks: Text Effect, Text Shimmer, Morphing Dialog, In View, Animated Number, Spotlight, Tilt."
+avoid_when = "No React/Tailwind in the stack."
+a11y = "Built on Motion: wrap the app in <MotionConfig reducedMotion='user'>."
+perf = "Light."
+react = '''
+# copy the exact install command from the component page on motion-primitives.com
+'''
+
+# ================================================================ motion engines
+
+[[effect]]
+key = "motion"
+name = "Motion (formerly Framer Motion)"
+library = "Motion"
+url = "https://motion.dev/"
+package = "motion"
+version = "14.0.0"
+license = "MIT"
+category = "micro"
+stacks = ["react", "vanilla", "vue"]
+vibes = ["calm", "playful", "techy", "editorial"]
+cost = "medium"
+use_when = "UI motion in React: enter/exit, layout animations, shared-element transitions, gestures, springs, scroll-linked values."
+avoid_when = "Pure CSS transitions or scroll-driven animations already cover it."
+a11y = "<MotionConfig reducedMotion='user'> disables transform/layout animation for users who ask."
+perf = "Use LazyMotion + m components to cut bundle size; animate transform and opacity."
+react = '''
+import { motion, MotionConfig } from 'motion/react'
+
+<MotionConfig reducedMotion="user">
+  <motion.h1
+    initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
+    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+  >
+    Ship faster
+  </motion.h1>
+</MotionConfig>
+'''
+vanilla = '''
+import { animate, inView } from 'motion'
+
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  inView('.reveal', (el) => {
+    animate(el, { opacity: [0, 1], y: [24, 0] }, { duration: 0.6, ease: [0.22, 1, 0.36, 1] })
+  })
+}
+'''
+
+[[effect]]
+key = "gsap"
+name = "GSAP + ScrollTrigger + SplitText"
+library = "GSAP"
+url = "https://gsap.com/docs/v3/"
+package = "gsap"
+version = "3.15.0"
+license = "Free for commercial use, including all plugins (since 3.13, Webflow)"
+category = "scroll"
+stacks = ["vanilla", "react", "vue"]
+vibes = ["dramatic", "bold", "editorial", "playful", "luxe"]
+cost = "medium"
+use_when = "Choreographed timelines, pinned scroll storytelling, split-text reveals, Flip layout transitions, SVG morphing."
+avoid_when = "Simple fades; CSS or Motion is lighter."
+a11y = "Wrap everything in gsap.matchMedia('(prefers-reduced-motion: no-preference)'). Never hide content until JS runs without a no-JS fallback."
+perf = "Animate transforms; kill ScrollTriggers on route change (useGSAP does this in React)."
+vanilla = '''
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SplitText } from 'gsap/SplitText'
+gsap.registerPlugin(ScrollTrigger, SplitText)
+
+const mm = gsap.matchMedia()
+mm.add('(prefers-reduced-motion: no-preference)', () => {
+  const split = SplitText.create('.hero h1', { type: 'lines', mask: 'lines' })
+  gsap.from(split.lines, { yPercent: 100, duration: 0.9, ease: 'expo.out', stagger: 0.08 })
+
+  gsap.utils.toArray('.reveal').forEach((el) => {
+    gsap.from(el, {
+      y: 40, autoAlpha: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%' },
+    })
+  })
+})
+'''
+react = '''
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+gsap.registerPlugin(useGSAP, ScrollTrigger)
+
+function Section() {
+  const ref = useRef(null)
+  useGSAP(() => {
+    gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', () => {
+      gsap.from('.card', { y: 40, autoAlpha: 0, stagger: 0.08,
+        scrollTrigger: { trigger: ref.current, start: 'top 75%' } })
+    })
+  }, { scope: ref })
+  return <section ref={ref}>...</section>
+}
+'''
+
+[[effect]]
+key = "lenis"
+name = "Lenis smooth scroll"
+library = "Lenis (darkroom.engineering)"
+url = "https://lenis.darkroom.engineering/"
+package = "lenis"
+version = "1.3.26"
+license = "MIT"
+category = "scroll"
+stacks = ["vanilla", "react", "vue"]
+vibes = ["luxe", "editorial", "dramatic", "calm"]
+cost = "light"
+use_when = "Portfolio, editorial and storytelling pages where scroll-linked motion must feel continuous."
+avoid_when = "Apps, docs, dashboards and long-reading pages: hijacked scroll annoys task-focused users."
+a11y = "Do not initialize under reduced motion. Keep native keyboard scrolling and anchor links working."
+perf = "Tiny; sync with GSAP's ticker when both are used."
+vanilla = '''
+import Lenis from 'lenis'
+import 'lenis/dist/lenis.css'
+
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const lenis = new Lenis({ autoRaf: true })
+  // with GSAP ScrollTrigger instead of autoRaf:
+  // const lenis = new Lenis()
+  // lenis.on('scroll', ScrollTrigger.update)
+  // gsap.ticker.add((t) => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0)
+}
+'''
+react = '''
+import { ReactLenis } from 'lenis/react'
+
+export default function Layout({ children }) {
+  const reduce = useReducedMotion()
+  return reduce ? children : <ReactLenis root>{children}</ReactLenis>
+}
+'''
+
+[[effect]]
+key = "rive"
+name = "Rive interactive animation"
+library = "Rive"
+url = "https://rive.app/"
+package = "@rive-app/react-canvas"
+version = "4.36.0"
+license = "MIT runtime; editor is a SaaS"
+category = "micro"
+stacks = ["react", "vanilla"]
+vibes = ["playful", "warm", "bold"]
+cost = "medium"
+use_when = "Interactive, state-machine driven illustrations: mascots, onboarding, animated icons that react to hover/click."
+avoid_when = "No designer to author the .riv file."
+a11y = "Provide a text equivalent; pause under reduced motion."
+perf = "WASM runtime (~100 kB); .riv files are tiny."
+react = '''
+import { useRive } from '@rive-app/react-canvas'
+
+function Mascot() {
+  const { RiveComponent } = useRive({ src: '/mascot.riv', stateMachines: 'State Machine 1', autoplay: !reduce })
+  return <RiveComponent aria-hidden="true" style={{ width: 320, height: 320 }} />
+}
+'''
+
+[[effect]]
+key = "dotlottie"
+name = "dotLottie"
+library = "LottieFiles dotLottie"
+url = "https://developers.lottiefiles.com/docs/dotlottie-player/"
+package = "@lottiefiles/dotlottie-react"
+version = "0.20.0"
+license = "MIT"
+category = "micro"
+stacks = ["react", "vanilla"]
+vibes = ["playful", "warm", "calm"]
+cost = "medium"
+use_when = "After Effects-style vector animations (icons, illustrations, success states)."
+avoid_when = "Large decorative loops on mobile."
+a11y = "autoplay={!reduce}; loop only when decorative."
+perf = "WASM renderer; .lottie files are compressed JSON."
+react = '''
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
+
+<DotLottieReact src="/success.lottie" loop={false} autoplay={!reduce} />
+'''
+
+[[effect]]
+key = "number-flow"
+name = "NumberFlow"
+library = "NumberFlow"
+url = "https://number-flow.barvian.me/"
+package = "@number-flow/react"
+version = "0.6.2"
+license = "MIT"
+category = "data"
+stacks = ["react", "vanilla", "vue"]
+vibes = ["calm", "techy", "playful"]
+cost = "light"
+use_when = "Animated digits for pricing toggles (monthly/yearly), counters, live stats."
+avoid_when = "Static numbers that never change."
+a11y = "Respects reduced motion by default; renders accessible text."
+perf = "Small; uses Intl.NumberFormat."
+react = '''
+import NumberFlow from '@number-flow/react'
+
+<NumberFlow value={yearly ? 192 : 20} format={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }} />
+'''
+
+[[effect]]
+key = "auto-animate"
+name = "AutoAnimate"
+library = "FormKit AutoAnimate"
+url = "https://auto-animate.formkit.com/"
+package = "@formkit/auto-animate"
+version = "0.10.0"
+license = "MIT"
+category = "micro"
+stacks = ["react", "vue", "vanilla"]
+vibes = ["calm", "playful"]
+cost = "light"
+use_when = "Zero-config add/remove/reorder animation for lists, accordions, toasts."
+avoid_when = "You need choreography; use Motion."
+a11y = "Disables itself under prefers-reduced-motion."
+perf = "About 3 kB."
+react = '''
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+
+const [parent] = useAutoAnimate()
+<ul ref={parent}>{items.map((i) => <li key={i.id}>{i.label}</li>)}</ul>
+'''
+
+[[effect]]
+key = "vaul-sonner"
+name = "Vaul drawer + Sonner toasts"
+library = "Emil Kowalski"
+url = "https://sonner.emilkowal.ski/"
+package = "vaul + sonner"
+version = "vaul 1.1.2, sonner 2.0.8"
+license = "MIT"
+category = "micro"
+stacks = ["react"]
+vibes = ["calm", "techy"]
+cost = "light"
+use_when = "Native-feeling mobile drawer (Vaul) and stacked, swipeable toasts (Sonner) in app UIs."
+avoid_when = "Marketing pages."
+a11y = "Both are built on accessible primitives; keep focus management intact."
+perf = "Light."
+react = '''
+import { Toaster, toast } from 'sonner'
+import { Drawer } from 'vaul'
+
+<Toaster position="bottom-right" />
+<button onClick={() => toast.success('Saved')}>Save</button>
+'''
+
+# ================================================================ native platform
+
+[[effect]]
+key = "view-transitions"
+name = "View Transitions API"
+library = "Web platform"
+url = "https://developer.chrome.com/docs/web-platform/view-transitions"
+package = "none (native)"
+version = "Baseline for same-document; cross-document in Chromium and Safari"
+license = "n/a"
+category = "transition"
+stacks = ["any", "react", "vanilla"]
+vibes = ["calm", "techy", "editorial", "playful"]
+cost = "light"
+use_when = "Page-to-page morphs (card to detail), smooth state swaps, shared-element transitions without a library."
+avoid_when = "Never; it degrades gracefully. Just keep transitions short."
+a11y = "Wrap custom animations in @media (prefers-reduced-motion: no-preference)."
+perf = "Compositor-driven snapshots; cheap."
+vanilla = '''
+/* multi-page sites: opt in on both pages */
+@view-transition { navigation: auto; }
+.card-image { view-transition-name: hero-image; } /* unique per page */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; }
+}
+
+/* single-page state change */
+// document.startViewTransition?.(() => updateTheDOM()) ?? updateTheDOM()
+'''
+
+[[effect]]
+key = "scroll-driven"
+name = "CSS scroll-driven animations"
+library = "Web platform"
+url = "https://developer.chrome.com/docs/css-ui/scroll-driven-animations"
+package = "none (native)"
+version = "Chromium + Safari 26; progressive enhancement elsewhere"
+license = "n/a"
+category = "scroll"
+stacks = ["any"]
+vibes = ["calm", "editorial", "techy", "playful"]
+cost = "light"
+use_when = "Reveal-on-scroll, progress bars, parallax and sticky storytelling with zero JS."
+avoid_when = "Complex pinned timelines (use GSAP)."
+a11y = "Gate inside @media (prefers-reduced-motion: no-preference) and @supports."
+perf = "Runs off the main thread."
+vanilla = '''
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 30%;
+    }
+    @keyframes reveal { from { opacity: 0; translate: 0 2rem; } to { opacity: 1; translate: 0 0; } }
+
+    .progress { position: fixed; inset: 0 0 auto; height: 3px; transform-origin: 0 50%;
+      background: var(--accent); animation: grow linear both; animation-timeline: scroll(root); }
+    @keyframes grow { from { scale: 0 1; } to { scale: 1 1; } }
+  }
+}
+'''
+
+[[effect]]
+key = "modern-css"
+name = "Modern CSS finishing kit"
+library = "Web platform"
+url = "https://developer.mozilla.org/en-US/docs/Web/CSS"
+package = "none (native)"
+version = "Baseline 2024-2026 features"
+license = "n/a"
+category = "css"
+stacks = ["any"]
+vibes = ["calm", "editorial", "techy", "luxe", "organic", "brutalist", "playful", "warm", "retro", "bold", "dramatic"]
+cost = "light"
+use_when = "Always available, zero JS: balanced headlines, OKLCH palettes, animated gradient borders, glass, grain, entry animations."
+avoid_when = "n/a; the cheapest way to look current."
+a11y = "Glass and grain must still pass text contrast; animations gated by reduced motion."
+perf = "backdrop-filter is expensive on large areas; keep blur radius moderate."
+vanilla = '''
+h1, h2 { text-wrap: balance; }  p { text-wrap: pretty; }
+
+:root {
+  --accent: oklch(0.68 0.19 35);
+  --accent-soft: color-mix(in oklch, var(--accent) 18%, white);
+}
+
+/* animated conic border (registered custom property) */
+@property --angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.glow-border { border: 1px solid transparent;
+  background: linear-gradient(var(--surface), var(--surface)) padding-box,
+              conic-gradient(from var(--angle), transparent 60%, var(--accent)) border-box; }
+@media (prefers-reduced-motion: no-preference) {
+  .glow-border { animation: spin 4s linear infinite; }
+  @keyframes spin { to { --angle: 360deg; } }
+}
+
+/* glass */
+.glass { background: color-mix(in oklch, var(--surface) 60%, transparent);
+  backdrop-filter: blur(16px) saturate(1.4); border: 1px solid color-mix(in oklch, white 14%, transparent); }
+
+/* film grain overlay (no image request) */
+.grain::after { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .08;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+/* entry animation for elements added to the DOM / popovers */
+.toast { transition: opacity .3s, translate .3s; @starting-style { opacity: 0; translate: 0 8px; } }
+'''

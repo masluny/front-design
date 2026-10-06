@@ -1,0 +1,51 @@
+/* design-scout scale: 17.0px @360px ratio 1.2 -> 19.0px @1440px ratio 1.333 (minor third -> perfect fourth) */
+:root {
+  --step--2: clamp(0.6683rem, 0.761rem - 0.103vw, 0.7378rem);  /* 11.8px -> 10.7px */
+  --step--1: clamp(0.8854rem, 0.8836rem + 0.008vw, 0.8908rem);  /* 14.2px -> 14.3px */
+  --step-0: clamp(1.0625rem, 1.0208rem + 0.1852vw, 1.1875rem);  /* 17.0px -> 19.0px */
+  --step-1: clamp(1.275rem, 1.1724rem + 0.4562vw, 1.5829rem);  /* 20.4px -> 25.3px */
+  --step-2: clamp(1.53rem, 1.3366rem + 0.8593vw, 2.1101rem);  /* 24.5px -> 33.8px */
+  --step-3: clamp(1.836rem, 1.5104rem + 1.447vw, 2.8127rem);  /* 29.4px -> 45.0px */
+  --step-4: clamp(2.2032rem, 1.6878rem + 2.2906vw, 3.7493rem);  /* 35.3px -> 60.0px */
+  --step-5: clamp(2.6438rem, 1.8592rem + 3.4874vw, 4.9979rem);  /* 42.3px -> 80.0px */
+  --space-3xs: clamp(0.2656rem, 0.2552rem + 0.0463vw, 0.2969rem);  /* 4.2px -> 4.8px */
+  --space-2xs: clamp(0.5312rem, 0.5104rem + 0.0926vw, 0.5938rem);  /* 8.5px -> 9.5px */
+  --space-xs: clamp(0.7969rem, 0.7656rem + 0.1389vw, 0.8906rem);  /* 12.8px -> 14.2px */
+  --space-s: clamp(1.0625rem, 1.0208rem + 0.1852vw, 1.1875rem);  /* 17.0px -> 19.0px */
+  --space-m: clamp(1.5938rem, 1.5312rem + 0.2778vw, 1.7812rem);  /* 25.5px -> 28.5px */
+  --space-l: clamp(2.125rem, 2.0417rem + 0.3704vw, 2.375rem);  /* 34.0px -> 38.0px */
+  --space-xl: clamp(3.1875rem, 3.0625rem + 0.5556vw, 3.5625rem);  /* 51.0px -> 57.0px */
+  --space-2xl: clamp(4.25rem, 4.0833rem + 0.7407vw, 4.75rem);  /* 68.0px -> 76.0px */
+  --space-3xl: clamp(6.375rem, 6.125rem + 1.1111vw, 7.125rem);  /* 102.0px -> 114.0px */
+  --space-s-l: clamp(1.0625rem, 0.625rem + 1.9444vw, 2.375rem);  /* 17.0px -> 38.0px */
+  --space-m-xl: clamp(1.5938rem, 0.9375rem + 2.9167vw, 3.5625rem);  /* 25.5px -> 57.0px */
+  --space-l-2xl: clamp(2.125rem, 1.25rem + 3.8889vw, 4.75rem);  /* 34.0px -> 76.0px */
+  --space-xl-3xl: clamp(3.1875rem, 1.875rem + 5.8333vw, 7.125rem);  /* 51.0px -> 114.0px */
+}
+
+/* color: oklch, every used pair checked with design-scout contrast (AA) */
+:root {
+  --paper: oklch(0.972 0.012 85);      /* page */
+  --paper-2: oklch(0.945 0.016 85);    /* plates, table header */
+  --ink: oklch(0.23 0.02 60);          /* 15.6:1 on paper */
+  --muted: oklch(0.47 0.02 60);        /* 6.3:1 on paper, 5.8:1 on paper-2 */
+  --rule: oklch(0.86 0.015 80);        /* decorative hairlines only */
+  --accent: oklch(0.55 0.18 33);       /* vermilion: primary action + stamps; 4.9:1 on paper */
+  --on-accent: oklch(0.99 0.005 85);   /* 5.1:1 on accent */
+  --marker: oklch(0.92 0.11 95);       /* highlighter; ink 13.4:1, muted 5.4:1 on it */
+  --verified: oklch(0.48 0.11 150);    /* 5.7:1 on paper */
+  --code-bg: oklch(0.24 0.02 60);
+  --code-text: oklch(0.93 0.01 85);    /* 13.4:1 on code-bg */
+  --code-dim: oklch(0.75 0.03 75);     /* 7.4:1 on code-bg */
+
+  --font-display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-text: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-control: 6px;
+  --radius-stamp: 2px;
+  --measure: 62ch;
+  --page-max: 76rem;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-ui: 200ms;
+}
